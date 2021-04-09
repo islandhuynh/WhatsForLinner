@@ -3,29 +3,28 @@ import { View, Text } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 
-const Drawer = createDrawerNavigator();
+import { SafeArea } from '../../components/utility/safe.area.component';
+import { WhatToEat } from '../../screens/what-to-eat/what-to-eat.screen';
 
-const WhatToEat = (): JSX.Element => {
-  return (
-    <View>
-      <Text>What to eat screen</Text>
-    </View>
-  )
-}
+const Drawer = createDrawerNavigator();
 
 const FindRestaurants = (): JSX.Element => {
   return (
-    <View>
-      <Text>Map API</Text>
-    </View>
+    <SafeArea>
+      <View>
+        <Text>Map API</Text>
+      </View>
+    </SafeArea>
   )
 }
 
 const VisitedRestaurants = (): JSX.Element => {
   return (
-    <View>
-      <Text>Folders</Text>
-    </View>
+    <SafeArea>
+      <View>
+        <Text>Folders</Text>
+      </View>
+    </SafeArea>
   )
 }
 
