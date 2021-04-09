@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Button, Card, Paragraph } from 'react-native-paper';
 
 import { SafeArea } from '../../components/utility/safe.area.component';
@@ -33,8 +33,8 @@ export const WhatToEat = (): JSX.Element => {
 
   return (
     <SafeArea>
-      <View style={styles.container}>
-        <View style={styles.mealButtonContainer}>
+      <ScrollView style={styles.container}>
+        <View style={styles.horizontalButtonContainer}>
           <Button color={courseSelection === 'Main' ? 'blue' : 'purple'} onPress={() => changeCourse('Main')}>
             Main
           </Button>
@@ -52,7 +52,44 @@ export const WhatToEat = (): JSX.Element => {
           <Text>Click on the button below to know what to eat</Text>
         }
         <Button onPress={() => chooseRestaurant()}>{courseSelection === 'Drinks' ? 'What to drink' : 'What to eat'}</Button>
-      </View>
+        <Text>Price Range</Text>
+        <View style={styles.horizontalButtonContainer}>
+          <Button>$</Button>
+          <Button>$$</Button>
+          <Button>$$$</Button>
+          <Button>$$$$</Button>
+        </View>
+        <Text>Category</Text>
+        <View style={styles.horizontalButtonContainer}>
+          <Button>American</Button>
+          <Button>Korean</Button>
+          <Button>Chinese</Button>
+        </View>
+        <View style={styles.horizontalButtonContainer}>
+          <Button>Japanese</Button>
+          <Button>Thai</Button>
+          <Button>No Pref</Button>
+        </View>
+        <View style={styles.horizontalButtonContainer}>
+          <Button>Italian</Button>
+          <Button>Jamaican</Button>
+        </View>
+        <Text>Category</Text>
+        <View style={styles.horizontalButtonContainer}>
+          <Button>Burger</Button>
+          <Button>Cheesesteak</Button>
+          <Button>Steak</Button>
+        </View>
+        <View style={styles.horizontalButtonContainer}>
+          <Button>Hot pot</Button>
+          <Button>Noodles</Button>
+          <Button>Dimsum</Button>
+        </View>
+        <View style={styles.horizontalButtonContainer}>
+          <Button>Sushi</Button>
+          <Button>Ramen</Button>
+        </View>
+      </ScrollView>
     </SafeArea>
   )
 }
@@ -61,13 +98,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 16
   },
-  mealButtonContainer: {
+  horizontalButtonContainer: {
     flexDirection: 'row',
-  },
-  courseButton: {
-    color: 'blue'
-  },
-  selectedCourseButton: {
-    color: 'red'
   }
 })
