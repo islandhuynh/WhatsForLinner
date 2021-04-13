@@ -32,7 +32,7 @@ const VisitedRestaurants = (): JSX.Element => {
 }
 
 const Settings = (): JSX.Element => {
-  const { logout, user } = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
 
   return (
     <SafeArea>
