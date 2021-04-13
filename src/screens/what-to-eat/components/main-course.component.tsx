@@ -20,8 +20,8 @@ enum CuisineType {
   ITALIAN = "Italian",
   JAPANESE = "Japanese",
   KOREAN = "Korean",
-  LATIN_AMERICAN = "LatinAmerican",
-  MEXICAN = "Mexican"
+  LATIN_AMERICAN = "Latin American",
+  MEXICAN = "Mexican",
 }
 
 
@@ -37,7 +37,7 @@ export const FindMainCourse = (): JSX.Element => {
     setDollarSigns(5);
   }
 
-  const cuisineTypeButton = (cuisine: CuisineType): JSX.Element => {
+  const cuisineTypeButton = (cuisine: string): JSX.Element => {
     return (
       <>
         {selectedCuisineTypes.includes(cuisine) ?
@@ -63,22 +63,18 @@ export const FindMainCourse = (): JSX.Element => {
       <Text>Cuisine Type</Text>
       <View style={styles.horizontalButtonContainer}>
         {cuisineTypeButton(CuisineType.AMERICAN)}
-        {cuisineTypeButton(CuisineType.KOREAN)}
         {cuisineTypeButton(CuisineType.CHINESE)}
+        {cuisineTypeButton(CuisineType.INDIAN)}
       </View>
       <View style={styles.horizontalButtonContainer}>
-        <Button>Japanese</Button>
-        <Button>Thai</Button>
-        <Button>No Pref</Button>
+        {cuisineTypeButton(CuisineType.ITALIAN)}
+        {cuisineTypeButton(CuisineType.JAPANESE)}
+        {cuisineTypeButton(CuisineType.KOREAN)}
       </View>
       <View style={styles.horizontalButtonContainer}>
-        <Button>Italian</Button>
-        <Button>Jamaican</Button>
-        <Button>Indian</Button>
-      </View>
-      <View style={styles.horizontalButtonContainer}>
-        <Button>Latin American</Button>
-        <Button>Mexican</Button>
+        {cuisineTypeButton(CuisineType.LATIN_AMERICAN)}
+        {cuisineTypeButton(CuisineType.MEXICAN)}
+        <Button onPress={() => setSelectedCuisineTypes([])} mode={selectedCuisineTypes.length > 0 ? 'text' : 'contained'}>No Pref</Button>
       </View>
       <Text>Food</Text>
       <View style={styles.horizontalButtonContainer}>
