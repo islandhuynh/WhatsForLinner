@@ -21,8 +21,11 @@ export const WhatToEat = (): JSX.Element => {
   const [selectedRestaurant, setSelectedRestaurant] = useState<RestaurantDetail | null>(null);
 
   const chooseRestaurant = () => {
-    const filteredRestaurants = savedRestaurants;
-    const randomInt = Math.floor(Math.random() * savedRestaurants.length);
+    const filteredRestaurants = savedRestaurants.filter(restaurant =>
+      restaurant.location === selectedLocation && restaurant.courseType.includes(courseSelection)
+    );
+    console.log(filteredRestaurants.length);
+    const randomInt = Math.floor(Math.random() * filteredRestaurants.length);
     setSelectedRestaurant(filteredRestaurants[randomInt]);
   }
 
@@ -50,13 +53,13 @@ export const WhatToEat = (): JSX.Element => {
             <Card.Title title={selectedRestaurant.name} />
             <Card.Content>
               <Paragraph>{selectedRestaurant.dollarSigns}</Paragraph>
-              <Paragraph onPress={() => Linking.openURL(`https://www.google.com/search?q=${selectedRestaurant.name}`)}>Location</Paragraph>
+              <Paragraph onPress={() => Linking.openURL(`https://www.google.com/search?q=${selectedRestaurant.name}`)}>Find Location</Paragraph>
             </Card.Content>
           </Card>
           :
           <Text>Click on the button below to know what to eat</Text>
         }
-        <Button onPress={() => chooseRestaurant()}>{courseSelection === 'Drinks' ? 'What to drink' : 'What to eat'}</Button>
+        <Button mode='contained' onPress={() => chooseRestaurant()}>{courseSelection === 'Drinks' ? 'What to drink' : 'What to eat'}</Button>
         <Text>Location</Text>
         <View style={styles.horizontalButtonContainer}>
           <Button onPress={() => changeLocation('Philadelphia')} mode={selectedLocation === 'Philadelphia' ? 'contained' : 'text'}>Philadelphia</Button>

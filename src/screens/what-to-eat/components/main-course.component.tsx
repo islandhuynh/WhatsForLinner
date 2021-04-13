@@ -2,16 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Linking } from 'react-native';
 import { Button, Card, Paragraph } from 'react-native-paper';
 
-const XcuisineType = {
-  American: ["Burgers", "Cheesesteak", "Steak", "BBQ"],
-  Chinese: ["Hot Pot", "Szechuan"],
-  Indian: [],
-  Italian: [],
-  Japanese: ["Ramen", "Sushi"],
-  Korean: ["Soft Tofu", "KBBQ"],
-  LatinAmerican: [],
-  Mexican: ["Tacos"]
-}
+import { savedRestaurants } from '../../../../mock/Restaurants.mock';
 
 enum CuisineType {
   AMERICAN = "American",
@@ -35,6 +26,7 @@ export const FindMainCourse = (): JSX.Element => {
 
   const clearFilters = () => {
     setDollarSigns(5);
+    setSelectedCuisineTypes([]);
   }
 
   const cuisineTypeButton = (cuisine: string): JSX.Element => {
@@ -48,8 +40,6 @@ export const FindMainCourse = (): JSX.Element => {
       </>
     )
   }
-
-
 
   return (
     <>
@@ -75,22 +65,6 @@ export const FindMainCourse = (): JSX.Element => {
         {cuisineTypeButton(CuisineType.LATIN_AMERICAN)}
         {cuisineTypeButton(CuisineType.MEXICAN)}
         <Button onPress={() => setSelectedCuisineTypes([])} mode={selectedCuisineTypes.length > 0 ? 'text' : 'contained'}>No Pref</Button>
-      </View>
-      <Text>Food</Text>
-      <View style={styles.horizontalButtonContainer}>
-        <Button>Burger</Button>
-        <Button>Cheesesteak</Button>
-        <Button>Steak</Button>
-      </View>
-      <View style={styles.horizontalButtonContainer}>
-        <Button>Hot pot</Button>
-        <Button>Noodles</Button>
-        <Button>Dimsum</Button>
-      </View>
-      <View style={styles.horizontalButtonContainer}>
-        <Button>Sushi</Button>
-        <Button>Ramen</Button>
-        <Button>Bar</Button>
       </View>
       <Button mode='contained' onPress={() => clearFilters()}>Clear Filters</Button>
     </>
