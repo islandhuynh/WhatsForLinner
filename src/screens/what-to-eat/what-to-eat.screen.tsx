@@ -19,6 +19,7 @@ export const WhatToEat = (): JSX.Element => {
   const [courseSelection, setCourseSelection] = useState('Main');
   const [selectedLocation, setSelectedLocation] = useState('Philadelphia');
   const [selectedRestaurant, setSelectedRestaurant] = useState<RestaurantDetail | null>(null);
+  const [foodFilters, setFoodFilters] = useState<string[]>([]);
 
   const chooseRestaurant = () => {
     const filteredRestaurants = savedRestaurants.filter(restaurant =>
@@ -32,7 +33,8 @@ export const WhatToEat = (): JSX.Element => {
   const changeCourse = (courseType: string) => {
     if (courseType !== courseSelection) {
       setCourseSelection(courseType);
-      setSelectedRestaurant(null)
+      setSelectedRestaurant(null);
+      setFoodFilters([]);
     }
   }
 
@@ -65,7 +67,8 @@ export const WhatToEat = (): JSX.Element => {
           <Button onPress={() => changeLocation('Philadelphia')} mode={selectedLocation === 'Philadelphia' ? 'contained' : 'text'}>Philadelphia</Button>
           <Button onPress={() => changeLocation('New York')} mode={selectedLocation === 'New York' ? 'contained' : 'text'}>New York</Button>
         </View>
-        {courseSelection === 'Main' ? <FindMainCourse /> : null}
+        {courseSelection === 'Main' ? <FindMainCourse foodFilters={foodFilters} setFoodFilters={setFoodFilters} /> : null}
+        <Button onPress={() => console.log(foodFilters)}>Clear Filters</Button>
       </ScrollView>
     </SafeArea>
   )

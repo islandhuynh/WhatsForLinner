@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Linking } from 'react-native';
-import { Button, Card, Paragraph } from 'react-native-paper';
-
-import { savedRestaurants } from '../../../../mock/Restaurants.mock';
+import { View, Text, StyleSheet } from 'react-native';
+import { Button } from 'react-native-paper';
 
 enum CuisineType {
   AMERICAN = "American",
@@ -15,27 +13,26 @@ enum CuisineType {
   MEXICAN = "Mexican",
 }
 
+interface FilterProps {
+  foodFilters: string[],
+  setFoodFilters: React.Dispatch<React.SetStateAction<string[]>>
+}
 
-export const FindMainCourse = (): JSX.Element => {
+export const FindMainCourse: React.FC<FilterProps> = ({ foodFilters, setFoodFilters }): JSX.Element => {
   const [dollarSigns, setDollarSigns] = useState(5);
-  const [selectedCuisineTypes, setSelectedCuisineTypes] = useState<string[]>([]);
-
-  // filters full list by "Main course"
-
-  // What to eat button should be here? 
 
   const clearFilters = () => {
     setDollarSigns(5);
-    setSelectedCuisineTypes([]);
+    setFoodFilters([]);
   }
 
   const cuisineTypeButton = (cuisine: string): JSX.Element => {
     return (
       <>
-        {selectedCuisineTypes.includes(cuisine) ?
-          <Button mode='contained' onPress={() => setSelectedCuisineTypes(selectedCuisineTypes.filter((n) => { return n !== cuisine }))}>{cuisine}</Button>
+        {foodFilters.includes(cuisine) ?
+          <Button mode='contained' onPress={() => setFoodFilters(foodFilters.filter((n) => { return n !== cuisine }))}>{cuisine}</Button>
           :
-          <Button mode='text' onPress={() => setSelectedCuisineTypes([...selectedCuisineTypes, cuisine])}>{cuisine}</Button>
+          <Button mode='text' onPress={() => setFoodFilters([...foodFilters, cuisine])}>{cuisine}</Button>
         }
       </>
     )
@@ -64,7 +61,7 @@ export const FindMainCourse = (): JSX.Element => {
       <View style={styles.horizontalButtonContainer}>
         {cuisineTypeButton(CuisineType.LATIN_AMERICAN)}
         {cuisineTypeButton(CuisineType.MEXICAN)}
-        <Button onPress={() => setSelectedCuisineTypes([])} mode={selectedCuisineTypes.length > 0 ? 'text' : 'contained'}>No Pref</Button>
+        <Button onPress={() => setFoodFilters([])} mode={foodFilters.length > 0 ? 'text' : 'contained'}>No Pref</Button>
       </View>
       <Button mode='contained' onPress={() => clearFilters()}>Clear Filters</Button>
     </>
