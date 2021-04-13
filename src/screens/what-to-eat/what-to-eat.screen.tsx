@@ -5,6 +5,7 @@ import { Button, Card, Paragraph } from 'react-native-paper';
 import { SafeArea } from '../../components/utility/safe.area.component';
 
 import { savedRestaurants } from '../../../mock/Restaurants.mock';
+import { FindMainCourse } from './components/main-course.component';
 
 interface RestaurantDetail {
   name: string,
@@ -16,6 +17,7 @@ interface RestaurantDetail {
 export const WhatToEat = (): JSX.Element => {
   // defaults to main course upon start
   const [courseSelection, setCourseSelection] = useState('Main');
+  const [selectedLocation, setSelectedLocation] = useState('Philadelphia');
   const [selectedRestaurant, setSelectedRestaurant] = useState<RestaurantDetail | null>(null);
 
   const chooseRestaurant = () => {
@@ -29,6 +31,10 @@ export const WhatToEat = (): JSX.Element => {
       setCourseSelection(courseType);
       setSelectedRestaurant(null)
     }
+  }
+
+  const changeLocation = (loc: string) => {
+    setSelectedLocation(loc);
   }
 
   return (
@@ -53,52 +59,10 @@ export const WhatToEat = (): JSX.Element => {
         <Button onPress={() => chooseRestaurant()}>{courseSelection === 'Drinks' ? 'What to drink' : 'What to eat'}</Button>
         <Text>Location</Text>
         <View style={styles.horizontalButtonContainer}>
-          <Button>Philadelphia</Button>
-          <Button>New York</Button>
+          <Button onPress={() => changeLocation('Philadelphia')} mode={selectedLocation === 'Philadelphia' ? 'contained' : 'text'}>Philadelphia</Button>
+          <Button onPress={() => changeLocation('New York')} mode={selectedLocation === 'New York' ? 'contained' : 'text'}>New York</Button>
         </View>
-        <Text>Price Range</Text>
-        <View style={styles.horizontalButtonContainer}>
-          <Button>$</Button>
-          <Button>$$</Button>
-          <Button>$$$</Button>
-          <Button>$$$$</Button>
-        </View>
-        <Text>Category</Text>
-        <View style={styles.horizontalButtonContainer}>
-          <Button>American</Button>
-          <Button>Korean</Button>
-          <Button>Chinese</Button>
-        </View>
-        <View style={styles.horizontalButtonContainer}>
-          <Button>Japanese</Button>
-          <Button>Thai</Button>
-          <Button>No Pref</Button>
-        </View>
-        <View style={styles.horizontalButtonContainer}>
-          <Button>Italian</Button>
-          <Button>Jamaican</Button>
-          <Button>Indian</Button>
-        </View>
-        <View style={styles.horizontalButtonContainer}>
-          <Button>Latin American</Button>
-          <Button>Mexican</Button>
-        </View>
-        <Text>Category</Text>
-        <View style={styles.horizontalButtonContainer}>
-          <Button>Burger</Button>
-          <Button>Cheesesteak</Button>
-          <Button>Steak</Button>
-        </View>
-        <View style={styles.horizontalButtonContainer}>
-          <Button>Hot pot</Button>
-          <Button>Noodles</Button>
-          <Button>Dimsum</Button>
-        </View>
-        <View style={styles.horizontalButtonContainer}>
-          <Button>Sushi</Button>
-          <Button>Ramen</Button>
-          <Button>Bar</Button>
-        </View>
+        {courseSelection === 'Main' ? <FindMainCourse /> : null}
       </ScrollView>
     </SafeArea>
   )
