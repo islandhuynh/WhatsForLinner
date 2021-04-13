@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Linking } from 'react-native';
 import { Button, Card, Paragraph } from 'react-native-paper';
 
 import { SafeArea } from '../../components/utility/safe.area.component';
@@ -35,9 +35,7 @@ export const WhatToEat = (): JSX.Element => {
     <SafeArea>
       <ScrollView style={styles.container}>
         <View style={styles.horizontalButtonContainer}>
-          <Button color={courseSelection === 'Main' ? 'blue' : 'purple'} onPress={() => changeCourse('Main')}>
-            Main
-          </Button>
+          <Button color={courseSelection === 'Main' ? 'blue' : 'purple'} onPress={() => changeCourse('Main')}>Main</Button>
           <Button color={courseSelection === 'Dessert' ? 'blue' : 'purple'} onPress={() => changeCourse('Dessert')}>Dessert</Button>
           <Button color={courseSelection === 'Drinks' ? 'blue' : 'purple'} onPress={() => changeCourse('Drinks')}>Drinks</Button>
         </View>
@@ -46,12 +44,18 @@ export const WhatToEat = (): JSX.Element => {
             <Card.Title title={selectedRestaurant.name} />
             <Card.Content>
               <Paragraph>{selectedRestaurant.dollarSigns}</Paragraph>
+              <Paragraph onPress={() => Linking.openURL(`https://www.google.com/search?q=${selectedRestaurant.name}`)}>Location</Paragraph>
             </Card.Content>
           </Card>
           :
           <Text>Click on the button below to know what to eat</Text>
         }
         <Button onPress={() => chooseRestaurant()}>{courseSelection === 'Drinks' ? 'What to drink' : 'What to eat'}</Button>
+        <Text>Location</Text>
+        <View style={styles.horizontalButtonContainer}>
+          <Button>Philadelphia</Button>
+          <Button>New York</Button>
+        </View>
         <Text>Price Range</Text>
         <View style={styles.horizontalButtonContainer}>
           <Button>$</Button>
@@ -73,6 +77,11 @@ export const WhatToEat = (): JSX.Element => {
         <View style={styles.horizontalButtonContainer}>
           <Button>Italian</Button>
           <Button>Jamaican</Button>
+          <Button>Indian</Button>
+        </View>
+        <View style={styles.horizontalButtonContainer}>
+          <Button>Latin American</Button>
+          <Button>Mexican</Button>
         </View>
         <Text>Category</Text>
         <View style={styles.horizontalButtonContainer}>
@@ -88,6 +97,7 @@ export const WhatToEat = (): JSX.Element => {
         <View style={styles.horizontalButtonContainer}>
           <Button>Sushi</Button>
           <Button>Ramen</Button>
+          <Button>Bar</Button>
         </View>
       </ScrollView>
     </SafeArea>
