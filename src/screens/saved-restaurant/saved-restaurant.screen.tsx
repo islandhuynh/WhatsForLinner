@@ -1,6 +1,6 @@
-import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import { List, Button } from 'react-native-paper';
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet, View, Text } from 'react-native';
+import { List, Button, Modal, Portal, Provider } from 'react-native-paper';
 
 import { SafeArea } from '../../components/utility/safe.area.component';
 
@@ -9,9 +9,18 @@ import { MealType } from '../../categories/mealOptions';
 import { savedRestaurants } from '../../../mock/Restaurants.mock';
 
 export const SavedRestaurants = (): JSX.Element => {
+  const [modalVisibility, setModalVisibility] = useState<boolean>(false);
+
   return (
     <SafeArea>
       <ScrollView>
+        <Provider>
+          <Portal>
+            <Modal visible={modalVisibility}>
+              <Text>asdsadasdas</Text>
+            </Modal>
+          </Portal>
+        </Provider>
         <List.Section>
           <List.Accordion title="Main Courses" left={props => <List.Icon {...props} icon="food" />}>
             {savedRestaurants.map(restaurant => restaurant.courseType.includes(MealType.MAIN) ?
@@ -37,7 +46,7 @@ export const SavedRestaurants = (): JSX.Element => {
         </List.Section>
         <View style={styles.horizontalButtonContainer}>
           <Button onPress={() => console.log('test')}>Add new Restaurant</Button>
-          <Button onPress={() => console.log('test')}>Add new Folder</Button>
+          <Button onPress={() => setModalVisibility(!modalVisibility)}>Add new Folder</Button>
         </View>
       </ScrollView>
     </SafeArea>
