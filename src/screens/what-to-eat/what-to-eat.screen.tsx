@@ -21,6 +21,7 @@ export const WhatToEat = (): JSX.Element => {
   const [hasAlcohol, setHasAlcohol] = useState(false);
   const [selectedRestaurant, setSelectedRestaurant] = useState<RestaurantDetail | null>(null);
   const [cuisineFilter, setCuisineFilters] = useState<string[]>([]);
+  const [dollarSigns, setDollarSigns] = useState(5);
 
   const chooseRestaurant = () => {
     let filteredRestaurants = undefined;
@@ -44,12 +45,17 @@ export const WhatToEat = (): JSX.Element => {
     setSelectedRestaurant(filteredRestaurants[randomInt]);
   }
 
+  const clearFilters = () => {
+    setSelectedRestaurant(null);
+    setDollarSigns(5);
+    setCuisineFilters([]);
+    setHasAlcohol(false);
+  }
+
   const changeCourse = (courseType: string) => {
     if (courseType !== courseSelection) {
       setCourseSelection(courseType);
-      setSelectedRestaurant(null);
-      setCuisineFilters([]);
-      setHasAlcohol(false);
+      clearFilters();
     }
   }
 
@@ -90,7 +96,17 @@ export const WhatToEat = (): JSX.Element => {
           :
           null
         }
-        {courseSelection === 'Main' ? <FindMainCourse cuisineFilter={cuisineFilter} setCuisineFilters={setCuisineFilters} /> : null}
+        {courseSelection === 'Main' ?
+          <FindMainCourse
+            cuisineFilter={cuisineFilter}
+            setCuisineFilters={setCuisineFilters}
+            dollarSigns={dollarSigns}
+            setDollarSigns={setDollarSigns}
+            clearFilters={clearFilters}
+          />
+          :
+          null
+        }
       </ScrollView>
     </SafeArea>
   )

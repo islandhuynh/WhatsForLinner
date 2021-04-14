@@ -15,17 +15,13 @@ enum CuisineType {
 
 interface FilterProps {
   cuisineFilter: string[],
-  setCuisineFilters: React.Dispatch<React.SetStateAction<string[]>>
+  setCuisineFilters: React.Dispatch<React.SetStateAction<string[]>>,
+  dollarSigns: number,
+  setDollarSigns: React.Dispatch<React.SetStateAction<number>>,
+  clearFilters: () => void
 }
 
-export const FindMainCourse: React.FC<FilterProps> = ({ cuisineFilter, setCuisineFilters }): JSX.Element => {
-  const [dollarSigns, setDollarSigns] = useState(5);
-
-  const clearFilters = () => {
-    setDollarSigns(5);
-    setCuisineFilters([]);
-  }
-
+export const FindMainCourse: React.FC<FilterProps> = ({ cuisineFilter, setCuisineFilters, dollarSigns, setDollarSigns, clearFilters }): JSX.Element => {
   const cuisineTypeButton = (cuisine: string): JSX.Element => {
     return (
       <>
