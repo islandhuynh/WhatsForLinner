@@ -15,23 +15,28 @@ interface RestaurantDetail {
 }
 
 export const WhatToEat = (): JSX.Element => {
-  // defaults to main course upon start
+  // defaults to main course and Philadelphia upon start
   const [courseSelection, setCourseSelection] = useState('Main');
   const [selectedLocation, setSelectedLocation] = useState('Philadelphia');
+  const [hasAlcohol, setHasAlcohol] = useState(false);
   const [selectedRestaurant, setSelectedRestaurant] = useState<RestaurantDetail | null>(null);
-  const [foodFilters, setFoodFilters] = useState<string[]>([]);
+  const [cuisineFilter, setCuisineFilters] = useState<string[]>([]);
 
   const chooseRestaurant = () => {
     let filteredRestaurants = undefined;
 
-    if (foodFilters.length > 0) {
+    if (cuisineFilter.length > 0) {
       filteredRestaurants = savedRestaurants.filter(restaurant =>
-        restaurant.location === selectedLocation && restaurant.courseType.includes(courseSelection) && restaurant.category.some(cat => foodFilters.includes(cat))
+        restaurant.location === selectedLocation && restaurant.courseType.includes(courseSelection) && restaurant.category.some(cat => cuisineFilter.includes(cat))
       );
     } else {
       filteredRestaurants = savedRestaurants.filter(restaurant =>
         restaurant.location === selectedLocation && restaurant.courseType.includes(courseSelection)
       );
+    }
+
+    if (courseSelection === 'Drinks') {
+      filteredRestaurants = filteredRestaurants.filter(restaurant => restaurant.hasAlcohol === hasAlcohol);
     }
 
     console.log(filteredRestaurants.length);
@@ -43,7 +48,8 @@ export const WhatToEat = (): JSX.Element => {
     if (courseType !== courseSelection) {
       setCourseSelection(courseType);
       setSelectedRestaurant(null);
-      setFoodFilters([]);
+      setCuisineFilters([]);
+      setHasAlcohol(false);
     }
   }
 
@@ -61,7 +67,7 @@ export const WhatToEat = (): JSX.Element => {
         </View>
         {selectedRestaurant ?
           <Card>
-            <Card.Title title={selectedRestaurant.name} />
+            <Card.Title title={selectedRestaurant.name} titleStyle={styles.cardTitle} />
             <Card.Content>
               <Paragraph>{selectedRestaurant.dollarSigns}</Paragraph>
               <Paragraph onPress={() => Linking.openURL(`https://www.google.com/search?q=${selectedRestaurant.name}`)}>Find Location</Paragraph>
@@ -70,14 +76,21 @@ export const WhatToEat = (): JSX.Element => {
           :
           <Text>Click on the button below to know what to eat</Text>
         }
-        <Button mode='contained' onPress={() => chooseRestaurant()}>{courseSelection === 'Drinks' ? 'What to drink' : 'What to eat'}</Button>
+        <Button mode='contained' onPress={() => chooseRestaurant()}>{selectedRestaurant ? 'retry' : courseSelection === 'Drinks' ? 'What to drink' : 'What to eat'}</Button>
         <Text>Location</Text>
         <View style={styles.horizontalButtonContainer}>
           <Button onPress={() => changeLocation('Philadelphia')} mode={selectedLocation === 'Philadelphia' ? 'contained' : 'text'}>Philadelphia</Button>
           <Button onPress={() => changeLocation('New York')} mode={selectedLocation === 'New York' ? 'contained' : 'text'}>New York</Button>
         </View>
-        {courseSelection === 'Main' ? <FindMainCourse foodFilters={foodFilters} setFoodFilters={setFoodFilters} /> : null}
-        <Button onPress={() => console.log(foodFilters)}>Check for Filters</Button>
+        {courseSelection === 'Drinks' ?
+          <View style={styles.horizontalButtonContainer}>
+            <Button onPress={() => setHasAlcohol(true)} mode={hasAlcohol ? 'contained' : 'text'}>Alcoholic</Button>
+            <Button onPress={() => setHasAlcohol(false)} mode={hasAlcohol ? 'text' : 'contained'}>Non-Alcoholic</Button>
+          </View>
+          :
+          null
+        }
+        {courseSelection === 'Main' ? <FindMainCourse cuisineFilter={cuisineFilter} setCuisineFilters={setCuisineFilters} /> : null}
       </ScrollView>
     </SafeArea>
   )
@@ -89,5 +102,9 @@ const styles = StyleSheet.create({
   },
   horizontalButtonContainer: {
     flexDirection: 'row',
+  },
+  cardTitle: {
+    fontWeight: 'bold',
+    textAlign: 'left'
   }
 })
