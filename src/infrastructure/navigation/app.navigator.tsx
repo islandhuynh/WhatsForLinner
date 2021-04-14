@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { SafeArea } from '../../components/utility/safe.area.component';
 import { WhatToEat } from '../../screens/what-to-eat/what-to-eat.screen';
 import { LoginScreen } from '../../screens/authentification/login.screen';
+import { SavedRestaurants } from '../../screens/saved-restaurant/saved-restaurant.screen';
 
 import { AuthContext } from '../../services/authentification/firebase-auth';
 
@@ -16,16 +17,6 @@ const FindRestaurants = (): JSX.Element => {
     <SafeArea>
       <View>
         <Text>Map API</Text>
-      </View>
-    </SafeArea>
-  )
-}
-
-const VisitedRestaurants = (): JSX.Element => {
-  return (
-    <SafeArea>
-      <View>
-        <Text>Folders</Text>
       </View>
     </SafeArea>
   )
@@ -54,7 +45,7 @@ export const AppNavigator = (): JSX.Element => {
           <Drawer.Navigator initialRouteName="What To Eat">
             <Drawer.Screen name="What To Eat" component={WhatToEat} />
             <Drawer.Screen name="Find Restaurant" component={FindRestaurants} />
-            <Drawer.Screen name="Restaurant List" component={VisitedRestaurants} />
+            <Drawer.Screen name="Restaurant List" component={SavedRestaurants} />
             <Drawer.Screen name="Settings" component={Settings} />
           </Drawer.Navigator>
         </NavigationContainer>
