@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 
+import { FilterProps } from './filterProps';
+
 enum CuisineType {
   AMERICAN = "American",
   CHINESE = "Chinese",
@@ -11,11 +13,6 @@ enum CuisineType {
   KOREAN = "Korean",
   LATIN_AMERICAN = "Latin American",
   MEXICAN = "Mexican",
-}
-
-interface FilterProps {
-  foodFilters: string[],
-  setFoodFilters: React.Dispatch<React.SetStateAction<string[]>>
 }
 
 export const FindMainCourse: React.FC<FilterProps> = ({ foodFilters, setFoodFilters }): JSX.Element => {

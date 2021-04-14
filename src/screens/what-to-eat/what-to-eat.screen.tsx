@@ -22,9 +22,18 @@ export const WhatToEat = (): JSX.Element => {
   const [foodFilters, setFoodFilters] = useState<string[]>([]);
 
   const chooseRestaurant = () => {
-    const filteredRestaurants = savedRestaurants.filter(restaurant =>
-      restaurant.location === selectedLocation && restaurant.courseType.includes(courseSelection)
-    );
+    let filteredRestaurants = undefined;
+
+    if (foodFilters.length > 0) {
+      filteredRestaurants = savedRestaurants.filter(restaurant =>
+        restaurant.location === selectedLocation && restaurant.courseType.includes(courseSelection) && restaurant.category.some(cat => foodFilters.includes(cat))
+      );
+    } else {
+      filteredRestaurants = savedRestaurants.filter(restaurant =>
+        restaurant.location === selectedLocation && restaurant.courseType.includes(courseSelection)
+      );
+    }
+
     console.log(filteredRestaurants.length);
     const randomInt = Math.floor(Math.random() * filteredRestaurants.length);
     setSelectedRestaurant(filteredRestaurants[randomInt]);
@@ -68,7 +77,7 @@ export const WhatToEat = (): JSX.Element => {
           <Button onPress={() => changeLocation('New York')} mode={selectedLocation === 'New York' ? 'contained' : 'text'}>New York</Button>
         </View>
         {courseSelection === 'Main' ? <FindMainCourse foodFilters={foodFilters} setFoodFilters={setFoodFilters} /> : null}
-        <Button onPress={() => console.log(foodFilters)}>Clear Filters</Button>
+        <Button onPress={() => console.log(foodFilters)}>Check for Filters</Button>
       </ScrollView>
     </SafeArea>
   )
