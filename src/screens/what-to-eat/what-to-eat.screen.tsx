@@ -28,11 +28,11 @@ export const WhatToEat = (): JSX.Element => {
 
     if (cuisineFilter.length > 0) {
       filteredRestaurants = savedRestaurants.filter(restaurant =>
-        restaurant.location === selectedLocation && restaurant.courseType.includes(courseSelection) && restaurant.category.some(cat => cuisineFilter.includes(cat))
+        restaurant.location === selectedLocation && restaurant.courseType.includes(courseSelection) && restaurant.category.some(cat => cuisineFilter.includes(cat)) && restaurant.dollarSigns <= dollarSigns
       );
     } else {
       filteredRestaurants = savedRestaurants.filter(restaurant =>
-        restaurant.location === selectedLocation && restaurant.courseType.includes(courseSelection)
+        restaurant.location === selectedLocation && restaurant.courseType.includes(courseSelection) && restaurant.dollarSigns <= dollarSigns
       );
     }
 
