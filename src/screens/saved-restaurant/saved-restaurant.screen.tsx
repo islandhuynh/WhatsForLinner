@@ -4,7 +4,9 @@ import { List, Button, TextInput } from 'react-native-paper';
 
 import { SafeArea } from '../../components/utility/safe.area.component';
 
-import { MealType, CuisineTypeList } from '../../categories/mealOptions';
+import { populateButtons } from '../../functions/populateButtons';
+
+import { MealType, cuisineTypeList, CuisineType } from '../../categories/mealOptions';
 import { LocationOptions } from '../../categories/locationOptions';
 import { RestaurantDetail } from '../../categories/restaurantDetails';
 
@@ -15,21 +17,28 @@ export const SavedRestaurants = (): JSX.Element => {
 
   // should have a function that renders either new restaurant or folder input
 
-  // populate buttons in rows of threes
-  const populateButtons = (typeList: string[]): JSX.Element => {
-    let buttonViewElements: JSX.Element[] = [];
+  const [newRestaurant, setNewRestaurant] = useState({});
+  const [newCuisineTypes, setNewCuisineTypes] = useState<string[]>([])
 
-    for (let index = 0; index < typeList.length; index += 3) {
-      buttonViewElements.push(
-        <View style={styles.horizontalButtonContainer} key={index}>
-          <Button key={typeList[index]}>{typeList[index]}</Button>
-          <Button key={typeList[index + 1]}>{typeList[index + 1]}</Button>
-          <Button key={typeList[index] + 2}>{typeList[index + 2]}</Button>
-        </View>
+  const newRestaurantCuisineButton = (cuisine: string): JSX.Element => {
+    if (cuisine === CuisineType.NO_PREF) {
+      return <Button
+        mode={newCuisineTypes.length > 0 ? 'text' : 'contained'}
+        onPress={() => setNewCuisineTypes([])}
+      >
+        Other
+        </Button>
+    } else {
+      return (
+        <>
+          {newCuisineTypes.includes(cuisine) ?
+            <Button mode='contained' onPress={() => setNewCuisineTypes(newCuisineTypes.filter((n) => { return n !== cuisine }))}>{cuisine}</Button>
+            :
+            <Button mode='text' onPress={() => setNewCuisineTypes([...newCuisineTypes, cuisine])}>{cuisine}</Button>
+          }
+        </>
       )
     }
-
-    return <>{buttonViewElements}</>
   }
 
   return (
@@ -58,16 +67,17 @@ export const SavedRestaurants = (): JSX.Element => {
               <Button>{MealType.DRINKS}</Button>
             </View>
             <Text>Cusine Type</Text>
-            {populateButtons(CuisineTypeList)}
+            {populateButtons(cuisineTypeList, newRestaurantCuisineButton)}
             <Text>Has Alcohol?</Text>
             <View style={styles.horizontalButtonContainer}>
               <Button>Yes</Button>
               <Button>No</Button>
             </View>
-            <TextInput mode="outlined" label="Recommended Dishes #1" />
+            {/* <TextInput mode="outlined" label="Recommended Dishes #1" />
             <TextInput mode="outlined" label="Recommended Dishes #2" />
-            <TextInput mode="outlined" label="Recommended Dishes #3" />
-            <Button onPress={() => setModalVisibility(!modalVisibility)} mode="contained">add restaurant</Button>
+            <TextInput mode="outlined" label="Recommended Dishes #3" /> */}
+            <Button onPress={() => setModalVisibility(false)} mode="contained">close</Button>
+            <Button onPress={() => console.log(newCuisineTypes)} mode="contained">add restaurant</Button>
           </ScrollView>
         </Modal>
         <List.Section>

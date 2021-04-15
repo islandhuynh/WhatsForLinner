@@ -6,6 +6,8 @@ import { SafeArea } from '../../components/utility/safe.area.component';
 
 import { savedRestaurants } from '../../../mock/Restaurants.mock';
 import { FindMainCourse } from './components/main-course.component';
+import { mealTypeList } from '../../categories/mealOptions';
+import { locationList } from '../../categories/locationOptions';
 
 interface RestaurantDetail {
   name: string,
@@ -66,9 +68,15 @@ export const WhatToEat = (): JSX.Element => {
     <SafeArea>
       <ScrollView style={styles.container}>
         <View style={styles.horizontalButtonContainer}>
-          <Button color={courseSelection === 'Main' ? 'blue' : 'purple'} onPress={() => changeCourse('Main')}>Main</Button>
-          <Button color={courseSelection === 'Dessert' ? 'blue' : 'purple'} onPress={() => changeCourse('Dessert')}>Dessert</Button>
-          <Button color={courseSelection === 'Drinks' ? 'blue' : 'purple'} onPress={() => changeCourse('Drinks')}>Drinks</Button>
+          {mealTypeList.map(courseType =>
+            <Button
+              key={courseType}
+              color={courseSelection === courseType ? 'blue' : 'purple'}
+              onPress={() => changeCourse(courseType)}
+            >
+              {courseType}
+            </Button>
+          )}
         </View>
         {selectedRestaurant ?
           <Card>

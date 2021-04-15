@@ -16,7 +16,13 @@ export enum CuisineType {
   NO_PREF = "NO PREF"
 }
 
-export const CuisineTypeList: string[] = [
+export const mealTypeList: MealType[] = [
+  MealType.MAIN,
+  MealType.DESSERT,
+  MealType.DRINKS
+];
+
+export const cuisineTypeList: CuisineType[] = [
   CuisineType.AMERICAN,
   CuisineType.CHINESE,
   CuisineType.INDIAN,

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 
-import { CuisineType, CuisineTypeList } from '../../../categories/mealOptions';
+import { CuisineType, cuisineTypeList } from '../../../categories/mealOptions';
 
 import { populateButtons } from '../../../functions/populateButtons';
 
@@ -42,7 +42,7 @@ export const FindMainCourse: React.FC<FilterProps> = ({ cuisineFilter, setCuisin
         <Button onPress={() => setDollarSigns(4)} color={dollarSigns === 4 ? 'blue' : 'black'}>$$$$</Button>
       </View>
       <Text>Cuisine Type</Text>
-      {populateButtons(CuisineTypeList, cuisineTypeButton)}
+      {populateButtons(cuisineTypeList, cuisineTypeButton)}
       <Button mode='contained' onPress={() => clearFilters()}>Clear Filters</Button>
     </>
   )
