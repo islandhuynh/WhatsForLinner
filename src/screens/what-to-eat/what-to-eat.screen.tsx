@@ -40,7 +40,6 @@ export const WhatToEat = (): JSX.Element => {
       filteredRestaurants = filteredRestaurants.filter(restaurant => restaurant.hasAlcohol === hasAlcohol);
     }
 
-    console.log(filteredRestaurants.length);
     const randomInt = Math.floor(Math.random() * filteredRestaurants.length);
     setSelectedRestaurant(filteredRestaurants[randomInt]);
   }

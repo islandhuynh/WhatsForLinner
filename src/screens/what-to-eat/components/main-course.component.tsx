@@ -2,16 +2,9 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 
-enum CuisineType {
-  AMERICAN = "American",
-  CHINESE = "Chinese",
-  INDIAN = "Indian",
-  ITALIAN = "Italian",
-  JAPANESE = "Japanese",
-  KOREAN = "Korean",
-  LATIN_AMERICAN = "Latin American",
-  MEXICAN = "Mexican",
-}
+import { CuisineType, CuisineTypeList } from '../../../categories/mealOptions';
+
+import { populateButtons } from '../../../functions/populateButtons';
 
 interface FilterProps {
   cuisineFilter: string[],
@@ -22,39 +15,20 @@ interface FilterProps {
 }
 
 export const FindMainCourse: React.FC<FilterProps> = ({ cuisineFilter, setCuisineFilters, dollarSigns, setDollarSigns, clearFilters }): JSX.Element => {
-  const cuisineTypeButton = (cuisine: string): JSX.Element => {
-    return (
-      <>
-        {cuisineFilter.includes(cuisine) ?
-          <Button mode='contained' onPress={() => setCuisineFilters(cuisineFilter.filter((n) => { return n !== cuisine }))}>{cuisine}</Button>
-          :
-          <Button mode='text' onPress={() => setCuisineFilters([...cuisineFilter, cuisine])}>{cuisine}</Button>
-        }
-      </>
-    )
-  }
 
-  const foodTypeButtons = (food: string): JSX.Element | undefined => {
-    switch (food) {
-      case CuisineType.AMERICAN:
-        return <View style={styles.horizontalButtonContainer}>
-          {cuisineTypeButton('Burger')}
-          {cuisineTypeButton('CheeseSteak')}
-          {cuisineTypeButton('Steak')}
-        </View>
-      case CuisineType.CHINESE:
-        return <View style={styles.horizontalButtonContainer}>
-          {cuisineTypeButton('Hot Pot')}
-          {cuisineTypeButton('Szechuan')}
-        </View>
-      case CuisineType.KOREAN:
-        return <View style={styles.horizontalButtonContainer}>
-          {cuisineTypeButton('KBBQ')}
-          {cuisineTypeButton('Soft Tofu')}
-          {cuisineTypeButton('Steak')}
-        </View>
-      default:
-        break;
+  const cuisineTypeButton = (cuisine: string): JSX.Element => {
+    if (cuisine === CuisineType.NO_PREF) {
+      return <Button onPress={() => setCuisineFilters([])} mode={cuisineFilter.length > 0 ? 'text' : 'contained'}>No Pref</Button>
+    } else {
+      return (
+        <>
+          {cuisineFilter.includes(cuisine) ?
+            <Button mode='contained' onPress={() => setCuisineFilters(cuisineFilter.filter((n) => { return n !== cuisine }))}>{cuisine}</Button>
+            :
+            <Button mode='text' onPress={() => setCuisineFilters([...cuisineFilter, cuisine])}>{cuisine}</Button>
+          }
+        </>
+      )
     }
   }
 
@@ -68,21 +42,7 @@ export const FindMainCourse: React.FC<FilterProps> = ({ cuisineFilter, setCuisin
         <Button onPress={() => setDollarSigns(4)} color={dollarSigns === 4 ? 'blue' : 'black'}>$$$$</Button>
       </View>
       <Text>Cuisine Type</Text>
-      <View style={styles.horizontalButtonContainer}>
-        {cuisineTypeButton(CuisineType.AMERICAN)}
-        {cuisineTypeButton(CuisineType.CHINESE)}
-        {cuisineTypeButton(CuisineType.INDIAN)}
-      </View>
-      <View style={styles.horizontalButtonContainer}>
-        {cuisineTypeButton(CuisineType.ITALIAN)}
-        {cuisineTypeButton(CuisineType.JAPANESE)}
-        {cuisineTypeButton(CuisineType.KOREAN)}
-      </View>
-      <View style={styles.horizontalButtonContainer}>
-        {cuisineTypeButton(CuisineType.LATIN_AMERICAN)}
-        {cuisineTypeButton(CuisineType.MEXICAN)}
-        <Button onPress={() => setCuisineFilters([])} mode={cuisineFilter.length > 0 ? 'text' : 'contained'}>No Pref</Button>
-      </View>
+      {populateButtons(CuisineTypeList, cuisineTypeButton)}
       <Button mode='contained' onPress={() => clearFilters()}>Clear Filters</Button>
     </>
   )
