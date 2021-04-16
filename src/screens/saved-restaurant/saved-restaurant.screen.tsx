@@ -16,23 +16,38 @@ export const SavedRestaurants = (): JSX.Element => {
   const [modalVisibility, setModalVisibility] = useState<boolean>(false);
 
   // should have a function that renders either new restaurant or folder input
+  const [restaurantList, setRestaurantList] = useState(savedRestaurants);
 
-  const [newRestaurant, setNewRestaurant] = useState({});
   const [newResName, setNewResName] = useState('');
   const [newResLocation, setNewResLocation] = useState(LocationOptions.PHILADELPHIA);
   const [newResPriceTag, setNewResPriceTag] = useState(1);
   const [newResCourseType, setNewResCourseType] = useState<string[]>([]);
   const [newResHasAlc, setNewResHasAlc] = useState(false);
   const [newCuisineTypes, setNewCuisineTypes] = useState<string[]>([]);
+  const [recommendedDishes, setRecommendedDishes] = useState<string[]>([]);
 
   const clearFields = (): void => {
-    setNewRestaurant({});
     setNewResName('');
     setNewResLocation(LocationOptions.PHILADELPHIA);
     setNewResPriceTag(1);
     setNewResCourseType([]);
     setNewResHasAlc(false);
     setNewCuisineTypes([]);
+  }
+
+  const addRestaurant = (): void => {
+    let newRestaurant: RestaurantDetail = {
+      name: newResName,
+      location: newResLocation,
+      courseType: newResCourseType,
+      dollarSigns: newResPriceTag,
+      category: newCuisineTypes,
+      dishes: [],
+      recommendedDishes: recommendedDishes,
+      hasAlcohol: newResHasAlc,
+    }
+
+    setRestaurantList([...restaurantList, newRestaurant]);
   }
 
   const newRestaurantCuisineButton = (cuisine: string): JSX.Element => {
@@ -114,27 +129,27 @@ export const SavedRestaurants = (): JSX.Element => {
             <TextInput mode="outlined" label="Recommended Dishes #2" />
             <TextInput mode="outlined" label="Recommended Dishes #3" /> */}
             <Button onPress={() => setModalVisibility(false)} mode="contained">close</Button>
-            <Button onPress={() => console.log(newCuisineTypes)} mode="contained">add restaurant</Button>
+            <Button onPress={() => addRestaurant()} mode="contained">add restaurant</Button>
             <Button onPress={() => clearFields()} mode="contained">reset fields</Button>
           </ScrollView>
         </Modal>
         <List.Section>
           <List.Accordion title="Main Courses" left={props => <List.Icon {...props} icon="food" />}>
-            {savedRestaurants.map(restaurant => restaurant.courseType.includes(MealType.MAIN) ?
+            {restaurantList.map(restaurant => restaurant.courseType.includes(MealType.MAIN) ?
               <List.Item key={restaurant.name + '-Main'} title={restaurant.name} right={props => <List.Icon {...props} icon="playlist-edit" />} />
               :
               null
             )}
           </List.Accordion>
           <List.Accordion title="Desserts" left={props => <List.Icon {...props} icon="cake" />}>
-            {savedRestaurants.map(restaurant => restaurant.courseType.includes(MealType.DESSERT) ?
+            {restaurantList.map(restaurant => restaurant.courseType.includes(MealType.DESSERT) ?
               <List.Item key={restaurant.name + '-Dessert'} title={restaurant.name} right={props => <List.Icon {...props} icon="playlist-edit" />} />
               :
               null
             )}
           </List.Accordion>
           <List.Accordion title="Drinks" left={props => <List.Icon {...props} icon="glass-cocktail" />}>
-            {savedRestaurants.map(restaurant => restaurant.courseType.includes(MealType.DRINKS) ?
+            {restaurantList.map(restaurant => restaurant.courseType.includes(MealType.DRINKS) ?
               <List.Item key={restaurant.name + '-Drinks'} title={restaurant.name} right={props => <List.Icon {...props} icon="playlist-edit" />} />
               :
               null
