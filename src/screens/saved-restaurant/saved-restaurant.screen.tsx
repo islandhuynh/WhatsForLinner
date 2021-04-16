@@ -6,7 +6,7 @@ import { SafeArea } from '../../components/utility/safe.area.component';
 
 import { populateButtons } from '../../functions/populateButtons';
 
-import { MealType, cuisineTypeList, CuisineType } from '../../categories/mealOptions';
+import { mealTypeList, MealType, cuisineTypeList, CuisineType } from '../../categories/mealOptions';
 import { LocationOptions } from '../../categories/locationOptions';
 import { RestaurantDetail } from '../../categories/restaurantDetails';
 
@@ -18,7 +18,22 @@ export const SavedRestaurants = (): JSX.Element => {
   // should have a function that renders either new restaurant or folder input
 
   const [newRestaurant, setNewRestaurant] = useState({});
-  const [newCuisineTypes, setNewCuisineTypes] = useState<string[]>([])
+  const [newResName, setNewResName] = useState('');
+  const [newResLocation, setNewResLocation] = useState(LocationOptions.PHILADELPHIA);
+  const [newResPriceTag, setNewResPriceTag] = useState(1);
+  const [newResCourseType, setNewResCourseType] = useState<string[]>([]);
+  const [newResHasAlc, setNewResHasAlc] = useState(false);
+  const [newCuisineTypes, setNewCuisineTypes] = useState<string[]>([]);
+
+  const clearFields = (): void => {
+    setNewRestaurant({});
+    setNewResName('');
+    setNewResLocation(LocationOptions.PHILADELPHIA);
+    setNewResPriceTag(1);
+    setNewResCourseType([]);
+    setNewResHasAlc(false);
+    setNewCuisineTypes([]);
+  }
 
   const newRestaurantCuisineButton = (cuisine: string): JSX.Element => {
     if (cuisine === CuisineType.NO_PREF) {
@@ -41,43 +56,66 @@ export const SavedRestaurants = (): JSX.Element => {
     }
   }
 
+  const selectCourseTypeButton = (courseType: string): JSX.Element => {
+    return (
+      <>
+        {newResCourseType.includes(courseType) ?
+          <Button mode='contained' onPress={() => setNewResCourseType(newResCourseType.filter((n) => { return n !== courseType }))}>{courseType}</Button>
+          :
+          <Button mode='text' onPress={() => setNewResCourseType([...newResCourseType, courseType])}>{courseType}</Button>
+        }
+      </>
+    )
+  }
+
   return (
     <SafeArea>
       <ScrollView>
         <Modal visible={modalVisibility} transparent={true} >
           <ScrollView style={styles.modalView}>
             <Text>Add Restaurant</Text>
-            <TextInput mode="outlined" label="Restaurant name" />
+            <TextInput mode="outlined" label="Restaurant name" value={newResName} onChangeText={name => setNewResName(name)} />
+            {newResName ? null : <Text>Please Enter a restaurant name</Text>}
             <Text>Location</Text>
             <View style={styles.horizontalButtonContainer}>
-              <Button>{LocationOptions.PHILADELPHIA}</Button>
-              <Button>{LocationOptions.NEW_YORK}</Button>
+              <Button
+                mode={newResLocation === LocationOptions.PHILADELPHIA ? 'contained' : 'text'}
+                onPress={() => setNewResLocation(LocationOptions.PHILADELPHIA)}
+              >
+                {LocationOptions.PHILADELPHIA}
+              </Button>
+              <Button
+                mode={newResLocation === LocationOptions.NEW_YORK ? 'contained' : 'text'}
+                onPress={() => setNewResLocation(LocationOptions.NEW_YORK)}
+              >
+                {LocationOptions.NEW_YORK}
+              </Button>
             </View>
             <Text>Price</Text>
             <View style={styles.horizontalButtonContainer}>
-              <Button>$</Button>
-              <Button>$$</Button>
-              <Button>$$$</Button>
-              <Button>$$$$</Button>
+              <Button onPress={() => setNewResPriceTag(1)} color={newResPriceTag === 1 ? 'blue' : 'black'}>$</Button>
+              <Button onPress={() => setNewResPriceTag(2)} color={newResPriceTag === 2 ? 'blue' : 'black'}>$$</Button>
+              <Button onPress={() => setNewResPriceTag(3)} color={newResPriceTag === 3 ? 'blue' : 'black'}>$$$</Button>
+              <Button onPress={() => setNewResPriceTag(4)} color={newResPriceTag === 4 ? 'blue' : 'black'}>$$$$</Button>
             </View>
             <Text>Course Type</Text>
             <View style={styles.horizontalButtonContainer}>
-              <Button>{MealType.MAIN}</Button>
-              <Button>{MealType.DESSERT}</Button>
-              <Button>{MealType.DRINKS}</Button>
+              {populateButtons(mealTypeList, selectCourseTypeButton)}
             </View>
+            {newResCourseType.length > 0 ? null : <Text>Please select at least one course type</Text>}
             <Text>Cusine Type</Text>
             {populateButtons(cuisineTypeList, newRestaurantCuisineButton)}
             <Text>Has Alcohol?</Text>
             <View style={styles.horizontalButtonContainer}>
-              <Button>Yes</Button>
-              <Button>No</Button>
+              <Button onPress={() => setNewResHasAlc(true)} mode={newResHasAlc ? 'contained' : 'text'}>Yes</Button>
+              <Button onPress={() => setNewResHasAlc(false)} mode={newResHasAlc ? 'text' : 'contained'}>No</Button>
             </View>
             {/* <TextInput mode="outlined" label="Recommended Dishes #1" />
             <TextInput mode="outlined" label="Recommended Dishes #2" />
             <TextInput mode="outlined" label="Recommended Dishes #3" /> */}
             <Button onPress={() => setModalVisibility(false)} mode="contained">close</Button>
             <Button onPress={() => console.log(newCuisineTypes)} mode="contained">add restaurant</Button>
+            <Button onPress={() => clearFields()} mode="contained">reset fields</Button>
           </ScrollView>
         </Modal>
         <List.Section>
