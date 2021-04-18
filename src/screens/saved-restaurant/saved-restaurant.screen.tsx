@@ -12,6 +12,8 @@ import { RestaurantDetail } from '../../categories/restaurantDetails';
 
 import { savedRestaurants } from '../../../mock/Restaurants.mock';
 
+import { ErrorTypes } from '../../categories/errors';
+
 export const SavedRestaurants = (): JSX.Element => {
   const [modalVisibility, setModalVisibility] = useState<boolean>(false);
 
@@ -26,6 +28,8 @@ export const SavedRestaurants = (): JSX.Element => {
   const [newCuisineTypes, setNewCuisineTypes] = useState<string[]>([]);
   const [recommendedDishes, setRecommendedDishes] = useState<string[]>([]);
 
+  const [formError, setFormError] = useState<ErrorTypes | undefined>(undefined);
+
   const clearFields = (): void => {
     setNewResName('');
     setNewResLocation(LocationOptions.PHILADELPHIA);
@@ -33,21 +37,47 @@ export const SavedRestaurants = (): JSX.Element => {
     setNewResCourseType([]);
     setNewResHasAlc(false);
     setNewCuisineTypes([]);
+    setFormError(undefined);
   }
 
   const addRestaurant = (): void => {
-    let newRestaurant: RestaurantDetail = {
-      name: newResName,
-      location: newResLocation,
-      courseType: newResCourseType,
-      dollarSigns: newResPriceTag,
-      category: newCuisineTypes,
-      dishes: [],
-      recommendedDishes: recommendedDishes,
-      hasAlcohol: newResHasAlc,
+    if (!newResName) {
+      setFormError(ErrorTypes.EMPTY_TEXT_INPUT);
+      return;
     }
 
-    setRestaurantList([...restaurantList, newRestaurant]);
+    if (newResCourseType.length === 0) {
+      setFormError(ErrorTypes.NO_COURSE_SELECTION);
+      return;
+    }
+
+    if (checkDuplicateRestaurant()) {
+      setFormError(ErrorTypes.RESTAURANT_ALREADY_EXIST);
+      return;
+    } else {
+      let newRestaurant: RestaurantDetail = {
+        name: newResName,
+        location: newResLocation,
+        courseType: newResCourseType,
+        dollarSigns: newResPriceTag,
+        category: newCuisineTypes,
+        dishes: [],
+        recommendedDishes: recommendedDishes,
+        hasAlcohol: newResHasAlc,
+      }
+
+      setRestaurantList([...restaurantList, newRestaurant]);
+      setModalVisibility(false);
+      clearFields();
+    }
+  }
+
+  const checkDuplicateRestaurant = (): boolean => {
+    if (restaurantList.some(restaurant => restaurant.name.toLowerCase() === newResName.toLowerCase())) {
+      return true;
+    }
+
+    return false;
   }
 
   const newRestaurantCuisineButton = (cuisine: string): JSX.Element => {
@@ -90,7 +120,8 @@ export const SavedRestaurants = (): JSX.Element => {
           <ScrollView style={styles.modalView}>
             <Text>Add Restaurant</Text>
             <TextInput mode="outlined" label="Restaurant name" value={newResName} onChangeText={name => setNewResName(name)} />
-            {newResName ? null : <Text>Please Enter a restaurant name</Text>}
+            {formError === ErrorTypes.EMPTY_TEXT_INPUT ? <Text>Please Enter a restaurant name</Text> : null}
+            {formError === ErrorTypes.RESTAURANT_ALREADY_EXIST ? <Text>Restaurant Already Exist</Text> : null}
             <Text>Location</Text>
             <View style={styles.horizontalButtonContainer}>
               <Button
@@ -117,7 +148,7 @@ export const SavedRestaurants = (): JSX.Element => {
             <View style={styles.horizontalButtonContainer}>
               {populateButtons(mealTypeList, selectCourseTypeButton)}
             </View>
-            {newResCourseType.length > 0 ? null : <Text>Please select at least one course type</Text>}
+            {formError === ErrorTypes.NO_COURSE_SELECTION ? <Text>Please select at least one course type</Text> : null}
             <Text>Cusine Type</Text>
             {populateButtons(cuisineTypeList, newRestaurantCuisineButton)}
             <Text>Has Alcohol?</Text>
