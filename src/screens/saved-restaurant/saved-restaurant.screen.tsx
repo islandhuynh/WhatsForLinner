@@ -76,7 +76,6 @@ export const SavedRestaurants = (): JSX.Element => {
     if (restaurantList.some(restaurant => restaurant.name.toLowerCase() === newResName.toLowerCase())) {
       return true;
     }
-
     return false;
   }
 
@@ -120,8 +119,8 @@ export const SavedRestaurants = (): JSX.Element => {
           <ScrollView style={styles.modalView}>
             <Text>Add Restaurant</Text>
             <TextInput mode="outlined" label="Restaurant name" value={newResName} onChangeText={name => setNewResName(name)} />
-            {formError === ErrorTypes.EMPTY_TEXT_INPUT ? <Text>Please Enter a restaurant name</Text> : null}
-            {formError === ErrorTypes.RESTAURANT_ALREADY_EXIST ? <Text>Restaurant Already Exist</Text> : null}
+            {formError === ErrorTypes.EMPTY_TEXT_INPUT ? <Text style={styles.errorText}>Please Enter a restaurant name</Text> : null}
+            {formError === ErrorTypes.RESTAURANT_ALREADY_EXIST ? <Text> style={styles.errorText}Restaurant Already Exist</Text> : null}
             <Text>Location</Text>
             <View style={styles.horizontalButtonContainer}>
               <Button
@@ -148,7 +147,7 @@ export const SavedRestaurants = (): JSX.Element => {
             <View style={styles.horizontalButtonContainer}>
               {populateButtons(mealTypeList, selectCourseTypeButton)}
             </View>
-            {formError === ErrorTypes.NO_COURSE_SELECTION ? <Text>Please select at least one course type</Text> : null}
+            {formError === ErrorTypes.NO_COURSE_SELECTION ? <Text style={styles.errorText}>Please select at least one course type</Text> : null}
             <Text>Cusine Type</Text>
             {populateButtons(cuisineTypeList, newRestaurantCuisineButton)}
             <Text>Has Alcohol?</Text>
@@ -217,5 +216,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5
+  },
+  errorText: {
+    color: 'red'
   }
 })

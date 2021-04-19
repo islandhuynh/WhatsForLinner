@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, Button, StyleSheet, TextInput } from 'react-native';
+import LottieView from 'lottie-react-native';
 
 import { SafeArea } from '../../components/utility/safe.area.component';
 import { AuthContext } from '../../services/authentification/firebase-auth';
@@ -12,6 +13,13 @@ export const LoginScreen = (): JSX.Element => {
   return (
     <SafeArea>
       <View style={styles.formContainer}>
+        <LottieView
+          key="animation"
+          autoPlay
+          loop
+          resizeMode="cover"
+          source={require("../../../assets/lottie/4762-food-carousel.json")}
+        />
         <Text>Email</Text>
         <TextInput placeholder="email" onChangeText={emailValue => setEmailInput(emailValue)} />
         <Text>Password</Text>

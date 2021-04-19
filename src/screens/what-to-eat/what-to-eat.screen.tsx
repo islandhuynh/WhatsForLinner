@@ -7,7 +7,6 @@ import { SafeArea } from '../../components/utility/safe.area.component';
 import { savedRestaurants } from '../../../mock/Restaurants.mock';
 import { FindMainCourse } from './components/main-course.component';
 import { mealTypeList } from '../../categories/mealOptions';
-import { locationList } from '../../categories/locationOptions';
 
 interface RestaurantDetail {
   name: string,
@@ -17,7 +16,6 @@ interface RestaurantDetail {
 }
 
 export const WhatToEat = (): JSX.Element => {
-  // defaults to main course and Philadelphia upon start
   const [courseSelection, setCourseSelection] = useState('Main');
   const [selectedLocation, setSelectedLocation] = useState('Philadelphia');
   const [hasAlcohol, setHasAlcohol] = useState(false);
