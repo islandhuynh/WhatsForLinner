@@ -4,6 +4,7 @@ import { List, Button } from 'react-native-paper';
 
 import { SafeArea } from '../../components/utility/safe.area.component';
 import { AddNewRestaurantForm } from './add-new-restaurant.form';
+import { InfoCard } from './restaurant-info-card';
 import { MealType } from '../../categories/mealOptions';
 
 import { savedRestaurants } from '../../../mock/Restaurants.mock';
@@ -18,34 +19,18 @@ enum FormTypes {
 export const SavedRestaurants = (): JSX.Element => {
   const [modalVisibility, setModalVisibility] = useState<boolean>(false);
   const [infoCardVisibility, setInfoCardVisibility] = useState<boolean>(false);
-  const [restaurantList, setRestaurantList] = useState(savedRestaurants);
+  const [restaurantList, setRestaurantList] = useState<RestaurantDetail[]>(savedRestaurants);
   const [selectedRestaurant, setSelectedRestaurant] = useState<RestaurantDetail>(emptyRestaurant);
   const [form, setForm] = useState<FormTypes>(FormTypes.NEW_FOLDER);
   const [editMode, setEditMode] = useState<boolean>(false);
 
-  const InfoCard = (): JSX.Element => {
-    return (
-      <View style={styles.modalView}>
-        <Text>Restaurant Info</Text>
-        <Text>{selectedRestaurant.name}</Text>
-        <Text>{selectedRestaurant.courseType}</Text>
-        <Text>{selectedRestaurant.dollarSigns}</Text>
-        <Text>{selectedRestaurant.category}</Text>
-        <Text>{selectedRestaurant.dishes}</Text>
-        <Text>{selectedRestaurant.recommendedDishes}</Text>
-        <Text>{selectedRestaurant.hasAlcohol}</Text>
-        <Text>{selectedRestaurant.location}</Text>
-        <Button onPress={() => setEditMode(true)}>edit</Button>
-        <Button onPress={() => setInfoCardVisibility(false)}>search</Button>
-        <Button onPress={() => setInfoCardVisibility(false)}>close</Button>
-      </View>
-    )
-  }
-
   const EditRestaurant = (): JSX.Element => {
+    let selectedRestaurantIndex = restaurantList.indexOf(selectedRestaurant);
+
     return (
       <View style={styles.modalView}>
         <Text>Edit Restaurant Info</Text>
+        <Text>{selectedRestaurantIndex}</Text>
         <Text>{selectedRestaurant.name}</Text>
         <Text>{selectedRestaurant.courseType}</Text>
         <Text>{selectedRestaurant.dollarSigns}</Text>
@@ -100,7 +85,7 @@ export const SavedRestaurants = (): JSX.Element => {
           {editMode ?
             <EditRestaurant />
             :
-            <InfoCard />
+            <InfoCard selectedRestaurant={selectedRestaurant} setInfoCardVisibility={setInfoCardVisibility} setEditMode={setEditMode} />
           }
         </Modal>
         <List.Section>
