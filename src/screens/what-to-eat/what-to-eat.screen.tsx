@@ -4,6 +4,7 @@ import { Button, Card, Paragraph } from 'react-native-paper';
 import LottieView from 'lottie-react-native';
 
 import { SafeArea } from '../../components/utility/safe.area.component';
+import { spacer } from '../../components/styles/stylesheet';
 
 import { savedRestaurants } from '../../../mock/Restaurants.mock';
 import { FindMainCourse } from './components/main-course.component';
@@ -13,7 +14,11 @@ interface RestaurantDetail {
   name: string,
   courseType: string[],
   dollarSigns: number,
-  category: string[]
+  category: string[],
+  dishes: string[]
+  recommendedDishes?: string[],
+  hasAlcohol: boolean,
+  location: string
 }
 
 export const WhatToEat = (): JSX.Element => {
@@ -79,10 +84,20 @@ export const WhatToEat = (): JSX.Element => {
         </View>
         {selectedRestaurant ?
           <Card>
-            <Card.Title title={selectedRestaurant.name} titleStyle={styles.cardTitle} />
+            <Text style={styles.cardTitle}>{selectedRestaurant.name}</Text>
             <Card.Content>
-              <Paragraph>{selectedRestaurant.dollarSigns}</Paragraph>
-              <Paragraph onPress={() => Linking.openURL(`https://www.google.com/search?q=${selectedRestaurant.name}`)}>Find Location</Paragraph>
+              <Text>{'$'.repeat(selectedRestaurant.dollarSigns)}</Text>
+              {selectedRestaurant.recommendedDishes ?
+                <>
+                  <Text>Recommended Dishes: </Text>
+                  {selectedRestaurant.recommendedDishes.length > 0 && <Text>1. {selectedRestaurant.recommendedDishes[0]}</Text>}
+                  {selectedRestaurant.recommendedDishes.length > 1 && <Text>2. {selectedRestaurant.recommendedDishes[1]}</Text>}
+                  {selectedRestaurant.recommendedDishes.length > 2 && <Text>3. {selectedRestaurant.recommendedDishes[2]}</Text>}
+                </>
+                :
+                null
+              }
+              <Button onPress={() => Linking.openURL(`https://www.google.com/search?q=${selectedRestaurant.name}`)}>Find Location</Button>
             </Card.Content>
           </Card>
           :
@@ -102,12 +117,16 @@ export const WhatToEat = (): JSX.Element => {
             }
           />
         }
-        <Button mode='contained' onPress={() => chooseRestaurant()}>{selectedRestaurant ? 'retry' : courseSelection === 'Drinks' ? 'What to drink' : 'What to eat'}</Button>
+        <View style={spacer.xs} />
+        <Button mode='contained' onPress={() => chooseRestaurant()}>{selectedRestaurant ? 'Try again' : courseSelection === 'Drinks' ? 'What to drink' : 'What to eat'}</Button>
+        <View style={spacer.xs} />
         <Text>Location</Text>
+        <View style={spacer.xs} />
         <View style={styles.horizontalButtonContainer}>
           <Button onPress={() => changeLocation('Philadelphia')} mode={selectedLocation === 'Philadelphia' ? 'contained' : 'text'}>Philadelphia</Button>
           <Button onPress={() => changeLocation('New York')} mode={selectedLocation === 'New York' ? 'contained' : 'text'}>New York</Button>
         </View>
+        <View style={spacer.xs} />
         {courseSelection === 'Drinks' ?
           <View style={styles.horizontalButtonContainer}>
             <Button onPress={() => setHasAlcohol(true)} mode={hasAlcohol ? 'contained' : 'text'}>Alcoholic</Button>
@@ -140,8 +159,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   cardTitle: {
+    paddingTop: 16,
+    fontSize: 24,
     fontWeight: 'bold',
-    textAlign: 'left'
+    textAlign: 'center',
   },
   animationView: {
     height: 200,
