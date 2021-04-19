@@ -7,16 +7,27 @@ import { AddNewRestaurantForm } from './add-new-restaurant.form';
 import { MealType } from '../../categories/mealOptions';
 
 import { savedRestaurants } from '../../../mock/Restaurants.mock';
+import { NewFolderForm } from './new-folder-form';
+
+enum FormTypes {
+  NEW_RESTAURANT,
+  NEW_FOLDER
+}
 
 export const SavedRestaurants = (): JSX.Element => {
   const [modalVisibility, setModalVisibility] = useState<boolean>(false);
   const [restaurantList, setRestaurantList] = useState(savedRestaurants);
+  const [form, setForm] = useState<FormTypes>(FormTypes.NEW_FOLDER);
 
   return (
     <SafeArea>
       <ScrollView>
         <Modal visible={modalVisibility} transparent={true} >
-          <AddNewRestaurantForm restaurantList={restaurantList} setModalVisibility={setModalVisibility} setRestaurantList={setRestaurantList} />
+          {form === FormTypes.NEW_FOLDER ?
+            <NewFolderForm setModalVisibility={setModalVisibility} />
+            :
+            <AddNewRestaurantForm restaurantList={restaurantList} setModalVisibility={setModalVisibility} setRestaurantList={setRestaurantList} />
+          }
         </Modal>
         <List.Section>
           <List.Accordion title="Main Courses" left={props => <List.Icon {...props} icon="food" />}>
@@ -42,8 +53,18 @@ export const SavedRestaurants = (): JSX.Element => {
           </List.Accordion>
         </List.Section>
         <View style={styles.horizontalButtonContainer}>
-          <Button onPress={() => setModalVisibility(true)}>Add new Restaurant</Button>
-          <Button onPress={() => setModalVisibility(true)}>Add new Folder</Button>
+          <Button
+            onPress={() => {
+              setModalVisibility(true)
+              setForm(FormTypes.NEW_RESTAURANT)
+            }}
+          >Add new Restaurant</Button>
+          <Button
+            onPress={() => {
+              setModalVisibility(true)
+              setForm(FormTypes.NEW_FOLDER)
+            }}
+          >Add new folder</Button>
         </View>
       </ScrollView>
     </SafeArea>
