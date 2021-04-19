@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { List, Button } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 
 import { RestaurantDetail } from '../../categories/restaurantDetails';
 

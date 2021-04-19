@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, View, Modal, Text } from 'react-native';
+import { ScrollView, View, Modal, Text } from 'react-native';
 import { List, Button } from 'react-native-paper';
 
 import { SafeArea } from '../../components/utility/safe.area.component';
 import { AddNewRestaurantForm } from './add-new-restaurant.form';
 import { InfoCard } from './restaurant-info-card';
 import { MealType } from '../../categories/mealOptions';
+import { styles } from '../../components/styles/stylesheet';
 
 import { savedRestaurants } from '../../../mock/Restaurants.mock';
 import { NewFolderForm } from './new-folder-form';
@@ -117,30 +118,3 @@ export const SavedRestaurants = (): JSX.Element => {
     </SafeArea>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 16
-  },
-  horizontalButtonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center'
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 5,
-    padding: 35,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5
-  },
-  errorText: {
-    color: 'red'
-  }
-})

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, View, Text } from 'react-native';
+import { ScrollView, View, Text } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 
 import { populateButtons } from '../../functions/populateButtons';
+import { styles } from '../../components/styles/stylesheet';
 
 import { mealTypeList, cuisineTypeList, CuisineType } from '../../categories/mealOptions';
 import { LocationOptions } from '../../categories/locationOptions';
@@ -153,27 +154,3 @@ export const AddNewRestaurantForm: React.FC<NewResProps> = ({ restaurantList, se
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  horizontalButtonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center'
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 5,
-    padding: 35,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5
-  },
-  errorText: {
-    color: 'red'
-  }
-})
