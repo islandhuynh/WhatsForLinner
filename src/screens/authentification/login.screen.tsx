@@ -13,12 +13,14 @@ export const LoginScreen = (): JSX.Element => {
   return (
     <SafeArea>
       <View style={styles.formContainer}>
+        <Text>What's for Linner?</Text>
         <LottieView
           key="animation"
           autoPlay
           loop
           resizeMode="cover"
           source={require("../../../assets/lottie/4762-food-carousel.json")}
+          style={styles.animationView}
         />
         <Text>Email</Text>
         <TextInput placeholder="email" onChangeText={emailValue => setEmailInput(emailValue)} />
@@ -35,5 +37,11 @@ const styles = StyleSheet.create({
   formContainer: {
     padding: 16,
     alignContent: 'center',
+  },
+  animationView: {
+    height: 200,
+    width: 200,
+    justifyContent: 'center',
+    alignSelf: 'center'
   }
 })
