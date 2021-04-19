@@ -8,3 +8,14 @@ export interface RestaurantDetail {
   hasAlcohol: boolean,
   location: string
 }
+
+export const emptyRestaurant: RestaurantDetail = {
+  name: '',
+  courseType: [],
+  dollarSigns: 0,
+  category: [],
+  dishes: [],
+  recommendedDishes: [],
+  hasAlcohol: false,
+  location: ''
+}
