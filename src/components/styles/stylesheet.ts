@@ -23,3 +23,24 @@ export const styles = StyleSheet.create({
     color: 'red'
   }
 })
+
+export const spacer = StyleSheet.create({
+  xs: {
+    padding: 4
+  },
+  small: {
+    padding: 8
+  },
+  medium: {
+    padding: 12
+  },
+  large: {
+    padding: 16
+  },
+  xl: {
+    padding: 20
+  },
+  xxl: {
+    padding: 24
+  }
+})

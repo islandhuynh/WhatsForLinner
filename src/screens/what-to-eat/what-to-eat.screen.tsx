@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Linking } from 'react-native';
 import { Button, Card, Paragraph } from 'react-native-paper';
+import LottieView from 'lottie-react-native';
 
 import { SafeArea } from '../../components/utility/safe.area.component';
 
 import { savedRestaurants } from '../../../mock/Restaurants.mock';
 import { FindMainCourse } from './components/main-course.component';
-import { mealTypeList } from '../../categories/mealOptions';
+import { mealTypeList, MealType } from '../../categories/mealOptions';
 
 interface RestaurantDetail {
   name: string,
@@ -16,7 +17,7 @@ interface RestaurantDetail {
 }
 
 export const WhatToEat = (): JSX.Element => {
-  const [courseSelection, setCourseSelection] = useState('Main');
+  const [courseSelection, setCourseSelection] = useState<MealType>(MealType.MAIN);
   const [selectedLocation, setSelectedLocation] = useState('Philadelphia');
   const [hasAlcohol, setHasAlcohol] = useState(false);
   const [selectedRestaurant, setSelectedRestaurant] = useState<RestaurantDetail | null>(null);
@@ -51,7 +52,7 @@ export const WhatToEat = (): JSX.Element => {
     setHasAlcohol(false);
   }
 
-  const changeCourse = (courseType: string) => {
+  const changeCourse = (courseType: MealType) => {
     if (courseType !== courseSelection) {
       setCourseSelection(courseType);
       clearFilters();
@@ -85,7 +86,21 @@ export const WhatToEat = (): JSX.Element => {
             </Card.Content>
           </Card>
           :
-          <Text>Click on the button below to know what to eat</Text>
+          <LottieView
+            key="animation"
+            autoPlay
+            loop
+            resizeMode="cover"
+            style={styles.animationView}
+            source={courseSelection === MealType.MAIN ?
+              require('../../../assets/lottie/43995-burger.json')
+              :
+              courseSelection === MealType.DESSERT ?
+                require('../../../assets/lottie/6674-cake.json')
+                :
+                require('../../../assets/lottie/4881-milkshake.json')
+            }
+          />
         }
         <Button mode='contained' onPress={() => chooseRestaurant()}>{selectedRestaurant ? 'retry' : courseSelection === 'Drinks' ? 'What to drink' : 'What to eat'}</Button>
         <Text>Location</Text>
@@ -127,5 +142,11 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontWeight: 'bold',
     textAlign: 'left'
-  }
+  },
+  animationView: {
+    height: 200,
+    width: 200,
+    justifyContent: 'center',
+    alignSelf: 'center'
+  },
 })

@@ -141,3 +141,5 @@ export const EditRestaurant: React.FC<EditProps> = ({
     </View>
   )
 }
+
+
