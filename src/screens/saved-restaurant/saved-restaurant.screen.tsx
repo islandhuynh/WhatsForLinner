@@ -67,6 +67,25 @@ export const SavedRestaurants = (): JSX.Element => {
     )
   }
 
+  const createRestaurantList = (restaurantList: RestaurantDetail[], courseType: MealType): JSX.Element => {
+    return (
+      <>
+        {restaurantList.map(restaurant => restaurant.courseType.includes(courseType) ?
+          <List.Item
+            key={restaurant.name + courseType}
+            title={restaurant.name}
+            onPress={() => {
+              setInfoCardVisibility(true)
+              setSelectedRestaurant(restaurant)
+            }}
+          />
+          :
+          null
+        )}
+      </>
+    )
+  }
+
   return (
     <SafeArea>
       <ScrollView>
@@ -86,32 +105,13 @@ export const SavedRestaurants = (): JSX.Element => {
         </Modal>
         <List.Section>
           <List.Accordion title="Main Courses" left={props => <List.Icon {...props} icon="food" />}>
-            {restaurantList.map(restaurant => restaurant.courseType.includes(MealType.MAIN) ?
-              <List.Item
-                key={restaurant.name + '-Main'}
-                title={restaurant.name} right={props => <List.Icon {...props} icon="playlist-edit" />}
-                onPress={() => {
-                  setInfoCardVisibility(true)
-                  setSelectedRestaurant(restaurant)
-                }}
-              />
-              :
-              null
-            )}
+            {createRestaurantList(restaurantList, MealType.MAIN)}
           </List.Accordion>
           <List.Accordion title="Desserts" left={props => <List.Icon {...props} icon="cake" />}>
-            {restaurantList.map(restaurant => restaurant.courseType.includes(MealType.DESSERT) ?
-              <List.Item key={restaurant.name + '-Dessert'} title={restaurant.name} right={props => <List.Icon {...props} icon="playlist-edit" />} />
-              :
-              null
-            )}
+            {createRestaurantList(restaurantList, MealType.DESSERT)}
           </List.Accordion>
           <List.Accordion title="Drinks" left={props => <List.Icon {...props} icon="glass-cocktail" />}>
-            {restaurantList.map(restaurant => restaurant.courseType.includes(MealType.DRINKS) ?
-              <List.Item key={restaurant.name + '-Drinks'} title={restaurant.name} right={props => <List.Icon {...props} icon="playlist-edit" />} />
-              :
-              null
-            )}
+            {createRestaurantList(restaurantList, MealType.DRINKS)}
           </List.Accordion>
         </List.Section>
         <View style={styles.horizontalButtonContainer}>
