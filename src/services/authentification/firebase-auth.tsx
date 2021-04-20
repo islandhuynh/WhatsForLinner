@@ -40,6 +40,16 @@ export const FirebaseAuthProvider = ({ children }: any) => {
 
   initFirebase();
 
+  const createUser = () => {
+    const createUserRef = firebase.database().ref("Users")
+    const user = {
+      name: 'island',
+      email: 'islandhuynh@gmail.com',
+      restaurantList: ["Bojangles", "McDonalds", "More Sugar"]
+    }
+    createUserRef.push(user);
+  }
+
   return (
     <>
       <AuthContext.Provider value={{
@@ -50,7 +60,8 @@ export const FirebaseAuthProvider = ({ children }: any) => {
         isLoading,
         setIsLoading,
         login,
-        logout
+        logout,
+        createUser
       }}>
         {children}
       </AuthContext.Provider>

@@ -8,7 +8,7 @@ import { AuthContext } from '../../services/authentification/firebase-auth';
 import { spacer } from '../../components/styles/stylesheet';
 
 export const LoginScreen = (): JSX.Element => {
-  const { login, error } = useContext(AuthContext);
+  const { login, error, createUser } = useContext(AuthContext);
   const [emailInput, setEmailInput] = useState<string | undefined>(undefined);
   const [passwordInput, setPasswordInput] = useState<string | undefined>(undefined);
 
@@ -33,6 +33,7 @@ export const LoginScreen = (): JSX.Element => {
         <TextInput placeholder="password" secureTextEntry={true} onChangeText={pass => setPasswordInput(pass)} />
         <Button title="Login" onPress={() => { login(emailInput, passwordInput) }} />
         {error && <Text>{error}</Text>}
+        <Button title="Test" onPress={() => { createUser() }} />
       </View>
     </SafeArea>
   )
