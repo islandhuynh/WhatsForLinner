@@ -4,13 +4,40 @@ import LottieView from 'lottie-react-native';
 
 import { SafeArea } from '../../components/utility/safe.area.component';
 import { AuthContext } from '../../services/authentification/firebase-auth';
-import { spacer } from '../../components/styles/stylesheet';
 import { AccScreen, AccScreenProps } from './utilities';
+import { spacer } from '../../components/styles/stylesheet';
 
-export const LoginScreen: React.FC<AccScreenProps> = ({ setScreen }): JSX.Element => {
-  const { login, error, createUser } = useContext(AuthContext);
+export const RegisterScreen: React.FC<AccScreenProps> = ({ setScreen }): JSX.Element => {
+  const { error, registerUser } = useContext(AuthContext);
   const [emailInput, setEmailInput] = useState<string | undefined>(undefined);
   const [passwordInput, setPasswordInput] = useState<string | undefined>(undefined);
+  const [confirmPasswordInput, setConfirmPasswordInput] = useState<string | undefined>(undefined);
+  const [registerError, setRegisterError] = useState<string | undefined>(undefined);
+
+  const createNewAccount = () => {
+    if (!emailInput) {
+      setRegisterError('Please enter an email');
+      return;
+    }
+
+    if (!passwordInput) {
+      setRegisterError('Please enter a password');
+      return;
+    }
+
+    if (passwordInput.length < 8) {
+      setRegisterError('Please enter a password of at least 8 characters');
+      return;
+    }
+
+    if (passwordInput !== confirmPasswordInput) {
+      setRegisterError('Please make sure both passwords match');
+      return;
+    }
+
+    registerUser(emailInput, passwordInput);
+    setRegisterError(undefined);
+  }
 
   return (
     <SafeArea>
@@ -27,15 +54,17 @@ export const LoginScreen: React.FC<AccScreenProps> = ({ setScreen }): JSX.Elemen
           style={styles.animationView}
         />
         <View style={spacer.large} />
+        {registerError && <Text>{registerError}</Text>}
+        {error && <Text>{error}</Text>}
         <Text>Email</Text>
         <TextInput placeholder="email" onChangeText={emailValue => setEmailInput(emailValue)} />
         <Text>Password</Text>
         <TextInput placeholder="password" secureTextEntry={true} onChangeText={pass => setPasswordInput(pass)} />
-        <Button title="Login" onPress={() => { login(emailInput, passwordInput) }} />
-        {error && <Text>{error}</Text>}
-        <Button title="Test" onPress={() => createUser()} />
-        <Text>No Account? No problem! Register here!</Text>
-        <Button title="Register" onPress={() => setScreen(AccScreen.REGISTER)} />
+        <Text>Confirm Password</Text>
+        <TextInput placeholder="confirm password" secureTextEntry={true} onChangeText={secondPass => setConfirmPasswordInput(secondPass)} />
+        <Button title="Sign Up" onPress={() => createNewAccount()} />
+        <Text>Already have an account? Sign In</Text>
+        <Button title="Return to sign in" onPress={() => setScreen(AccScreen.LOGIN)} />
       </View>
     </SafeArea>
   )

@@ -2,6 +2,7 @@ import firebase from 'firebase/app';
 import React, { createContext, useState } from 'react';
 
 import 'firebase/auth';
+import 'firebase/database';
 
 import { firebaseConfig } from '../../../config/firebaseconfig';
 
@@ -38,6 +39,16 @@ export const FirebaseAuthProvider = ({ children }: any) => {
     setIsLoading(false);
   }
 
+  const registerUser = async (email: string, password: string) => {
+    setIsLoading(true);
+    await firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(u => setUser(u))
+      .catch(e => setError(e.toString()));
+    setIsLoading(false);
+  }
+
   initFirebase();
 
   const createUser = () => {
@@ -61,7 +72,8 @@ export const FirebaseAuthProvider = ({ children }: any) => {
         setIsLoading,
         login,
         logout,
-        createUser
+        createUser,
+        registerUser
       }}>
         {children}
       </AuthContext.Provider>

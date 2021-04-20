@@ -5,10 +5,11 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import { SafeArea } from '../../components/utility/safe.area.component';
 import { WhatToEat } from '../../screens/what-to-eat/what-to-eat.screen';
-import { LoginScreen } from '../../screens/authentification/login.screen';
 import { SavedRestaurants } from '../../screens/saved-restaurant/saved-restaurant.screen';
+import { AccountScreen } from '../../screens/authentification/account.screen';
 
 import { AuthContext } from '../../services/authentification/firebase-auth';
+
 
 const Drawer = createDrawerNavigator();
 
@@ -40,7 +41,7 @@ export const AppNavigator = (): JSX.Element => {
 
   return (
     <>
-      {!user ? <LoginScreen /> :
+      {!user ? <AccountScreen /> :
         <NavigationContainer>
           <Drawer.Navigator initialRouteName="What To Eat">
             <Drawer.Screen name="What To Eat" component={WhatToEat} />
