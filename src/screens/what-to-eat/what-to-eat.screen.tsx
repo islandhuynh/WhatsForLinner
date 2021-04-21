@@ -1,27 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, StyleSheet, ScrollView, Linking } from 'react-native';
-import { Button, Card, Paragraph } from 'react-native-paper';
+import { Button, Card } from 'react-native-paper';
 import LottieView from 'lottie-react-native';
 
 import { SafeArea } from '../../components/utility/safe.area.component';
 import { spacer } from '../../components/styles/stylesheet';
-
-import { savedRestaurants } from '../../../mock/Restaurants.mock';
 import { FindMainCourse } from './components/main-course.component';
 import { mealTypeList, MealType } from '../../categories/mealOptions';
-
-interface RestaurantDetail {
-  name: string,
-  courseType: string[],
-  dollarSigns: number,
-  category: string[],
-  dishes: string[]
-  recommendedDishes?: string[],
-  hasAlcohol: boolean,
-  location: string
-}
+import { AuthContext } from '../../services/authentification/firebase-auth';
+import { RestaurantDetail } from '../../categories/restaurantDetails';
 
 export const WhatToEat = (): JSX.Element => {
+  const { savedRestaurants } = useContext(AuthContext);
+
   const [courseSelection, setCourseSelection] = useState<MealType>(MealType.MAIN);
   const [selectedLocation, setSelectedLocation] = useState('Philadelphia');
   const [hasAlcohol, setHasAlcohol] = useState(false);
@@ -30,14 +21,14 @@ export const WhatToEat = (): JSX.Element => {
   const [dollarSigns, setDollarSigns] = useState(5);
 
   const chooseRestaurant = () => {
-    let filteredRestaurants = undefined;
+    let filteredRestaurants: RestaurantDetail[] = [];
 
     if (cuisineFilter.length > 0) {
-      filteredRestaurants = savedRestaurants.filter(restaurant =>
+      filteredRestaurants = savedRestaurants.filter((restaurant: RestaurantDetail) =>
         restaurant.location === selectedLocation && restaurant.courseType.includes(courseSelection) && restaurant.category.some(cat => cuisineFilter.includes(cat)) && restaurant.dollarSigns <= dollarSigns
       );
     } else {
-      filteredRestaurants = savedRestaurants.filter(restaurant =>
+      filteredRestaurants = savedRestaurants.filter((restaurant: RestaurantDetail) =>
         restaurant.location === selectedLocation && restaurant.courseType.includes(courseSelection) && restaurant.dollarSigns <= dollarSigns
       );
     }

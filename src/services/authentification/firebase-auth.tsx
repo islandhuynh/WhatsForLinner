@@ -7,6 +7,7 @@ import 'firebase/database';
 import { firebaseConfig } from '../../../config/firebaseconfig';
 
 import { defaultRestaurantList } from '../../default/default-restaurant-list';
+import { RestaurantDetail } from '../../categories/restaurantDetails';
 
 export const AuthContext = createContext({} as any);
 
@@ -20,13 +21,17 @@ export const FirebaseAuthProvider = ({ children }: any) => {
   const [user, setUser] = useState<{} | undefined>(undefined);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [savedRestaurants, setSavedRestaurants] = useState<RestaurantDetail[]>([])
 
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     await firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(u => setUser(u))
+      .then(u => {
+        setUser(u)
+        logUser(u.user!.uid)
+      })
       .catch(e => setError(e.toString()));
     setIsLoading(false);
   }
@@ -62,6 +67,15 @@ export const FirebaseAuthProvider = ({ children }: any) => {
     })
   }
 
+  const logUser = async (userId: string) => {
+    let list: RestaurantDetail[] = [];
+    await firebase.database().ref('Users/' + userId).once('value').then((snapshot) => {
+      list = (snapshot.val().restaurantList)
+    })
+
+    setSavedRestaurants(list);
+  }
+
   LogBox.ignoreLogs(['Setting a timer']);
 
   initFirebase();
@@ -77,7 +91,9 @@ export const FirebaseAuthProvider = ({ children }: any) => {
         setIsLoading,
         login,
         logout,
-        registerUser
+        registerUser,
+        savedRestaurants,
+        setSavedRestaurants
       }}>
         {children}
       </AuthContext.Provider>
