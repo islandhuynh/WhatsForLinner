@@ -25,7 +25,9 @@ export const AddNewRestaurantForm: React.FC<NewResProps> = ({ setModalVisibility
   const [newResCourseType, setNewResCourseType] = useState<string[]>([]);
   const [newResHasAlc, setNewResHasAlc] = useState(false);
   const [newCuisineTypes, setNewCuisineTypes] = useState<string[]>([]);
-  const [recommendedDishes, setRecommendedDishes] = useState<string[]>([]);
+  const [firstRecommendedDish, setFirstRecommendedDish] = useState<string>('');
+  const [secondRecommendedDish, setSecondRecommendedDish] = useState<string>('');
+  const [thirdRecommendedDish, setThirdRecommendedDish] = useState<string>('');
 
   const [formError, setFormError] = useState<ErrorTypes | undefined>(undefined);
 
@@ -37,6 +39,9 @@ export const AddNewRestaurantForm: React.FC<NewResProps> = ({ setModalVisibility
     setNewResHasAlc(false);
     setNewCuisineTypes([]);
     setFormError(undefined);
+    setFirstRecommendedDish('');
+    setSecondRecommendedDish('');
+    setThirdRecommendedDish('');
   }
 
   const addRestaurant = (): void => {
@@ -60,7 +65,11 @@ export const AddNewRestaurantForm: React.FC<NewResProps> = ({ setModalVisibility
         dollarSigns: newResPriceTag,
         category: newCuisineTypes,
         dishes: [],
-        recommendedDishes: recommendedDishes,
+        recommendedDishes: [
+          firstRecommendedDish,
+          secondRecommendedDish,
+          thirdRecommendedDish
+        ],
         hasAlcohol: newResHasAlc,
       }
 
@@ -144,9 +153,9 @@ export const AddNewRestaurantForm: React.FC<NewResProps> = ({ setModalVisibility
           <Button onPress={() => setNewResHasAlc(true)} mode={newResHasAlc ? 'contained' : 'text'}>Yes</Button>
           <Button onPress={() => setNewResHasAlc(false)} mode={newResHasAlc ? 'text' : 'contained'}>No</Button>
         </View>
-        {/* <TextInput mode="outlined" label="Recommended Dishes #1" />
-      <TextInput mode="outlined" label="Recommended Dishes #2" />
-      <TextInput mode="outlined" label="Recommended Dishes #3" /> */}
+        <TextInput mode="outlined" label="Recommended Dishes #1" value={firstRecommendedDish} onChangeText={v => setFirstRecommendedDish(v)} />
+        <TextInput mode="outlined" label="Recommended Dishes #2" value={secondRecommendedDish} onChangeText={v => setSecondRecommendedDish(v)} />
+        <TextInput mode="outlined" label="Recommended Dishes #3" value={thirdRecommendedDish} onChangeText={v => setThirdRecommendedDish(v)} />
         <Button onPress={() => setModalVisibility(false)} mode="contained">close</Button>
         <Button onPress={() => addRestaurant()} mode="contained">add restaurant</Button>
         <Button onPress={() => clearFields()} mode="contained">reset fields</Button>

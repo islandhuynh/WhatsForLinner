@@ -4,7 +4,7 @@ export interface RestaurantDetail {
   dollarSigns: number,
   category: string[],
   dishes: string[]
-  recommendedDishes?: string[],
+  recommendedDishes: string[],
   hasAlcohol: boolean,
   location: string
 }

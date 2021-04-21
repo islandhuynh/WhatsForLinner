@@ -30,7 +30,9 @@ export const EditRestaurant: React.FC<EditProps> = ({
   const [newDollarSigns, setNewDollarSigns] = useState(selectedRestaurant.dollarSigns);
   const [newCategories, setNewCategories] = useState(selectedRestaurant.category);
   const [newDishes, setNewDishes] = useState(selectedRestaurant.dishes);
-  const [newRecommendedDishes, setNewRecommendedDishes] = useState(selectedRestaurant.recommendedDishes);
+  const [firstRecommendedDish, setFirstRecommendedDish] = useState<string>(selectedRestaurant.recommendedDishes[0] || '');
+  const [secondRecommendedDish, setSecondRecommendedDish] = useState<string>(selectedRestaurant.recommendedDishes[1] || '');
+  const [thirdRecommendedDish, setThirdRecommendedDish] = useState<string>(selectedRestaurant.recommendedDishes[2] || '');
   const [changeHasAlc, setChangeHasAlc] = useState(selectedRestaurant.hasAlcohol);
   const [newLocation, setNewLocation] = useState(selectedRestaurant.location);
 
@@ -76,7 +78,11 @@ export const EditRestaurant: React.FC<EditProps> = ({
       dollarSigns: newDollarSigns,
       category: newCategories,
       dishes: newDishes,
-      recommendedDishes: newRecommendedDishes,
+      recommendedDishes: [
+        firstRecommendedDish,
+        secondRecommendedDish,
+        thirdRecommendedDish
+      ],
       hasAlcohol: changeHasAlc,
       location: newLocation
     }
@@ -127,6 +133,9 @@ export const EditRestaurant: React.FC<EditProps> = ({
         <Button onPress={() => setChangeHasAlc(true)} mode={changeHasAlc ? 'contained' : 'text'}>Yes</Button>
         <Button onPress={() => setChangeHasAlc(false)} mode={changeHasAlc ? 'text' : 'contained'}>No</Button>
       </View>
+      <TextInput mode="outlined" label="Recommended Dishes #1" value={firstRecommendedDish} onChangeText={v => setFirstRecommendedDish(v)} />
+      <TextInput mode="outlined" label="Recommended Dishes #2" value={secondRecommendedDish} onChangeText={v => setSecondRecommendedDish(v)} />
+      <TextInput mode="outlined" label="Recommended Dishes #3" value={thirdRecommendedDish} onChangeText={v => setThirdRecommendedDish(v)} />
       <Button onPress={() => submitChanges()}>Submit Changes</Button>
       <Button onPress={() => setEditMode(false)}>return</Button>
       <Button
