@@ -21,7 +21,7 @@ export const EditRestaurant: React.FC<EditProps> = ({
   setInfoCardVisibility,
   setEditMode,
 }): JSX.Element => {
-  const { savedRestaurants, setSavedRestaurants } = useContext(AuthContext);
+  const { savedRestaurants, user, updateRestaurantList } = useContext(AuthContext);
 
   let selectedRestaurantIndex = savedRestaurants.indexOf(selectedRestaurant);
 
@@ -29,14 +29,12 @@ export const EditRestaurant: React.FC<EditProps> = ({
   const [newCourseTypes, setNewCourseTypes] = useState(selectedRestaurant.courseType);
   const [newDollarSigns, setNewDollarSigns] = useState(selectedRestaurant.dollarSigns);
   const [newCategories, setNewCategories] = useState(selectedRestaurant.category);
-  const [newDishes, setNewDishes] = useState(selectedRestaurant.dishes);
+  const [newDishes, setNewDishes] = useState(selectedRestaurant.dishes || []);
   const [firstRecommendedDish, setFirstRecommendedDish] = useState<string>(selectedRestaurant.recommendedDishes[0] || '');
   const [secondRecommendedDish, setSecondRecommendedDish] = useState<string>(selectedRestaurant.recommendedDishes[1] || '');
   const [thirdRecommendedDish, setThirdRecommendedDish] = useState<string>(selectedRestaurant.recommendedDishes[2] || '');
   const [changeHasAlc, setChangeHasAlc] = useState(selectedRestaurant.hasAlcohol);
   const [newLocation, setNewLocation] = useState(selectedRestaurant.location);
-
-  const [editFormError, setEditFormError] = useState<ErrorTypes | undefined>(undefined);
 
   const newRestaurantCuisineButton = (cuisine: string): JSX.Element => {
     if (cuisine === CuisineType.NO_PREF) {
@@ -91,7 +89,7 @@ export const EditRestaurant: React.FC<EditProps> = ({
 
     tempRestaurantList[selectedRestaurantIndex] = editedRestaurant;
 
-    setSavedRestaurants(tempRestaurantList);
+    updateRestaurantList(user.user!.uid, tempRestaurantList);
 
     setInfoCardVisibility(false);
   }
