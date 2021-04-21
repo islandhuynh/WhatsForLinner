@@ -1,12 +1,12 @@
 import firebase from 'firebase/app';
 import React, { createContext, useState } from 'react';
+import { LogBox } from 'react-native';
 
 import 'firebase/auth';
 import 'firebase/database';
-
 import { firebaseConfig } from '../../../config/firebaseconfig';
 
-// Should add auth context for user
+import { defaultRestaurantList } from '../../default/default-restaurant-list';
 
 export const AuthContext = createContext({} as any);
 
@@ -44,22 +44,27 @@ export const FirebaseAuthProvider = ({ children }: any) => {
     await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(u => setUser(u))
+      .then(u => {
+        setUser(u);
+        createUserDBAccount(u.user!.uid, email);
+      })
       .catch(e => setError(e.toString()));
+
     setIsLoading(false);
   }
 
-  initFirebase();
-
-  const createUser = () => {
-    const createUserRef = firebase.database().ref("Users")
-    const user = {
-      name: 'island',
-      email: 'islandhuynh@gmail.com',
-      restaurantList: ["Bojangles", "McDonalds", "More Sugar"]
-    }
-    createUserRef.push(user);
+  const createUserDBAccount = async (userId: string, email: string) => {
+    await firebase.database().ref('Users/' + userId).set({
+      uid: userId,
+      email,
+      restaurantList: defaultRestaurantList,
+      savedLists: []
+    })
   }
+
+  LogBox.ignoreLogs(['Setting a timer']);
+
+  initFirebase();
 
   return (
     <>
@@ -72,7 +77,6 @@ export const FirebaseAuthProvider = ({ children }: any) => {
         setIsLoading,
         login,
         logout,
-        createUser,
         registerUser
       }}>
         {children}

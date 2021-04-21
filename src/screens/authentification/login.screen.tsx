@@ -33,7 +33,6 @@ export const LoginScreen: React.FC<AccScreenProps> = ({ setScreen }): JSX.Elemen
         <TextInput placeholder="password" secureTextEntry={true} onChangeText={pass => setPasswordInput(pass)} />
         <Button title="Login" onPress={() => { login(emailInput, passwordInput) }} />
         {error && <Text>{error}</Text>}
-        <Button title="Test" onPress={() => createUser()} />
         <Text>No Account? No problem! Register here!</Text>
         <Button title="Register" onPress={() => setScreen(AccScreen.REGISTER)} />
       </View>
