@@ -17,7 +17,7 @@ interface NewResProps {
 }
 
 export const AddNewRestaurantForm: React.FC<NewResProps> = ({ setModalVisibility }): JSX.Element => {
-  const { savedRestaurants, setSavedRestaurants } = useContext(AuthContext);
+  const { savedRestaurants, updateRestaurantList, user } = useContext(AuthContext);
 
   const [newResName, setNewResName] = useState('');
   const [newResLocation, setNewResLocation] = useState(LocationOptions.PHILADELPHIA);
@@ -73,7 +73,7 @@ export const AddNewRestaurantForm: React.FC<NewResProps> = ({ setModalVisibility
         hasAlcohol: newResHasAlc,
       }
 
-      setSavedRestaurants([...savedRestaurants, newRestaurant]);
+      updateRestaurantList(user.user!.uid, [...savedRestaurants, newRestaurant]);
       setModalVisibility(false);
       clearFields();
     }

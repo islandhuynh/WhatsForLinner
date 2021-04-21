@@ -76,6 +76,14 @@ export const FirebaseAuthProvider = ({ children }: any) => {
     setSavedRestaurants(list);
   }
 
+  const updateRestaurantList = async (userId: string, updatedList: RestaurantDetail[]) => {
+    await firebase.database().ref('Users/' + userId + '/restaurantList/')
+      .set(updatedList)
+      .catch(e => setError(e.toString()));
+
+    setSavedRestaurants(updatedList);
+  }
+
   LogBox.ignoreLogs(['Setting a timer']);
 
   initFirebase();
@@ -93,7 +101,8 @@ export const FirebaseAuthProvider = ({ children }: any) => {
         logout,
         registerUser,
         savedRestaurants,
-        setSavedRestaurants
+        setSavedRestaurants,
+        updateRestaurantList
       }}>
         {children}
       </AuthContext.Provider>
