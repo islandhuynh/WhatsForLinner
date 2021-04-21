@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ScrollView, View, Modal, Text } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { ScrollView, View, Modal } from 'react-native';
 import { List, Button } from 'react-native-paper';
 
 import { SafeArea } from '../../components/utility/safe.area.component';
@@ -8,10 +8,10 @@ import { InfoCard } from './restaurant-info-card';
 import { MealType } from '../../categories/mealOptions';
 import { styles } from '../../components/styles/stylesheet';
 
-import { savedRestaurants } from '../../../mock/Restaurants.mock';
 import { NewFolderForm } from './new-folder-form';
 import { EditRestaurant } from './edit-restaurant-form';
 import { RestaurantDetail, emptyRestaurant } from '../../categories/restaurantDetails';
+import { AuthContext } from '../../services/authentification/firebase-auth';
 
 enum FormTypes {
   NEW_RESTAURANT,
@@ -19,9 +19,10 @@ enum FormTypes {
 }
 
 export const SavedRestaurants = (): JSX.Element => {
+  const { savedRestaurants } = useContext(AuthContext);
+
   const [modalVisibility, setModalVisibility] = useState<boolean>(false);
   const [infoCardVisibility, setInfoCardVisibility] = useState<boolean>(false);
-  const [restaurantList, setRestaurantList] = useState<RestaurantDetail[]>(savedRestaurants);
   const [selectedRestaurant, setSelectedRestaurant] = useState<RestaurantDetail>(emptyRestaurant);
   const [form, setForm] = useState<FormTypes>(FormTypes.NEW_FOLDER);
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -52,15 +53,13 @@ export const SavedRestaurants = (): JSX.Element => {
           {form === FormTypes.NEW_FOLDER ?
             <NewFolderForm setModalVisibility={setModalVisibility} />
             :
-            <AddNewRestaurantForm restaurantList={restaurantList} setModalVisibility={setModalVisibility} setRestaurantList={setRestaurantList} />
+            <AddNewRestaurantForm setModalVisibility={setModalVisibility} />
           }
         </Modal>
         <Modal visible={infoCardVisibility} transparent={true}>
           {editMode ?
             <EditRestaurant
               selectedRestaurant={selectedRestaurant}
-              restaurantList={restaurantList}
-              setRestaurantList={setRestaurantList}
               setInfoCardVisibility={setInfoCardVisibility}
               setEditMode={setEditMode}
             />
@@ -70,13 +69,13 @@ export const SavedRestaurants = (): JSX.Element => {
         </Modal>
         <List.Section>
           <List.Accordion title="Main Courses" left={props => <List.Icon {...props} icon="food" />}>
-            {createRestaurantList(restaurantList, MealType.MAIN)}
+            {createRestaurantList(savedRestaurants, MealType.MAIN)}
           </List.Accordion>
           <List.Accordion title="Desserts" left={props => <List.Icon {...props} icon="cake" />}>
-            {createRestaurantList(restaurantList, MealType.DESSERT)}
+            {createRestaurantList(savedRestaurants, MealType.DESSERT)}
           </List.Accordion>
           <List.Accordion title="Drinks" left={props => <List.Icon {...props} icon="glass-cocktail" />}>
-            {createRestaurantList(restaurantList, MealType.DRINKS)}
+            {createRestaurantList(savedRestaurants, MealType.DRINKS)}
           </List.Accordion>
         </List.Section>
         <View style={styles.horizontalButtonContainer}>

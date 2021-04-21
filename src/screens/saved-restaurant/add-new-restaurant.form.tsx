@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { ScrollView, View, Text } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 
@@ -10,14 +10,14 @@ import { LocationOptions } from '../../categories/locationOptions';
 import { RestaurantDetail } from '../../categories/restaurantDetails';
 
 import { ErrorTypes } from '../../categories/errors';
+import { AuthContext } from '../../services/authentification/firebase-auth';
 
 interface NewResProps {
-  restaurantList: RestaurantDetail[],
-  setRestaurantList: React.Dispatch<React.SetStateAction<RestaurantDetail[]>>,
   setModalVisibility: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
-export const AddNewRestaurantForm: React.FC<NewResProps> = ({ restaurantList, setRestaurantList, setModalVisibility }): JSX.Element => {
+export const AddNewRestaurantForm: React.FC<NewResProps> = ({ setModalVisibility }): JSX.Element => {
+  const { savedRestaurants, setSavedRestaurants } = useContext(AuthContext);
 
   const [newResName, setNewResName] = useState('');
   const [newResLocation, setNewResLocation] = useState(LocationOptions.PHILADELPHIA);
@@ -50,7 +50,7 @@ export const AddNewRestaurantForm: React.FC<NewResProps> = ({ restaurantList, se
       return;
     }
 
-    if (restaurantList.some(restaurant => restaurant.name.toLowerCase() === newResName.toLowerCase())) {
+    if (savedRestaurants.some((restaurant: RestaurantDetail) => restaurant.name.toLowerCase() === newResName.toLowerCase())) {
       setFormError(ErrorTypes.RESTAURANT_ALREADY_EXIST);
     } else {
       let newRestaurant: RestaurantDetail = {
@@ -64,7 +64,7 @@ export const AddNewRestaurantForm: React.FC<NewResProps> = ({ restaurantList, se
         hasAlcohol: newResHasAlc,
       }
 
-      setRestaurantList([...restaurantList, newRestaurant]);
+      setSavedRestaurants([...savedRestaurants, newRestaurant]);
       setModalVisibility(false);
       clearFields();
     }

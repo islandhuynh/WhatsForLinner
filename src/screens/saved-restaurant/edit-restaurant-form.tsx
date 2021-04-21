@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 
@@ -8,23 +8,22 @@ import { RestaurantDetail, emptyRestaurant } from '../../categories/restaurantDe
 import { LocationOptions } from '../../categories/locationOptions';
 import { populateButtons } from '../../functions/populateButtons';
 import { mealTypeList, cuisineTypeList, CuisineType } from '../../categories/mealOptions';
+import { AuthContext } from '../../services/authentification/firebase-auth';
 
 interface EditProps {
   selectedRestaurant: RestaurantDetail,
-  restaurantList: RestaurantDetail[],
-  setRestaurantList: React.Dispatch<React.SetStateAction<RestaurantDetail[]>>
   setInfoCardVisibility: React.Dispatch<React.SetStateAction<boolean>>,
   setEditMode: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
 export const EditRestaurant: React.FC<EditProps> = ({
   selectedRestaurant,
-  restaurantList,
-  setRestaurantList,
   setInfoCardVisibility,
   setEditMode,
 }): JSX.Element => {
-  let selectedRestaurantIndex = restaurantList.indexOf(selectedRestaurant);
+  const { savedRestaurants, setSavedRestaurants } = useContext(AuthContext);
+
+  let selectedRestaurantIndex = savedRestaurants.indexOf(selectedRestaurant);
 
   const [newName, setNewName] = useState(selectedRestaurant.name);
   const [newCourseTypes, setNewCourseTypes] = useState(selectedRestaurant.courseType);
@@ -82,11 +81,11 @@ export const EditRestaurant: React.FC<EditProps> = ({
       location: newLocation
     }
 
-    let tempRestaurantList = restaurantList;
+    let tempRestaurantList = savedRestaurants;
 
     tempRestaurantList[selectedRestaurantIndex] = editedRestaurant;
 
-    setRestaurantList(tempRestaurantList);
+    setSavedRestaurants(tempRestaurantList);
 
     setInfoCardVisibility(false);
   }
