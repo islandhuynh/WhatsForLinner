@@ -1,12 +1,14 @@
 import React, { useState, useContext } from 'react';
-import { ScrollView, View, Modal } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { List, Button } from 'react-native-paper';
+import Modal from 'react-native-modal';
 
 import { SafeArea } from '../../components/utility/safe.area.component';
 import { AddNewRestaurantForm } from './add-new-restaurant.form';
 import { InfoCard } from './restaurant-info-card';
 import { MealType } from '../../categories/mealOptions';
 import { styles } from '../../components/styles/stylesheet';
+import { colorTheme } from '../../components/styles/theme';
 
 import { NewFolderForm } from './new-folder-form';
 import { EditRestaurant } from './edit-restaurant-form';
@@ -49,14 +51,14 @@ export const SavedRestaurants = (): JSX.Element => {
   return (
     <SafeArea>
       <ScrollView>
-        <Modal visible={modalVisibility} transparent={true} >
+        <Modal isVisible={modalVisibility} propagateSwipe={true} backdropOpacity={0} >
           {form === FormTypes.NEW_FOLDER ?
             <NewFolderForm setModalVisibility={setModalVisibility} />
             :
             <AddNewRestaurantForm setModalVisibility={setModalVisibility} />
           }
         </Modal>
-        <Modal visible={infoCardVisibility} transparent={true}>
+        <Modal isVisible={infoCardVisibility} >
           {editMode ?
             <EditRestaurant
               selectedRestaurant={selectedRestaurant}
@@ -68,18 +70,20 @@ export const SavedRestaurants = (): JSX.Element => {
           }
         </Modal>
         <List.Section>
-          <List.Accordion title="Main Courses" left={props => <List.Icon {...props} icon="food" />}>
+          <List.Accordion title="Main Courses" left={props => <List.Icon {...props} icon="food" />} theme={{ colors: { primary: colorTheme.midnightGreen } }}>
             {createRestaurantList(savedRestaurants, MealType.MAIN)}
           </List.Accordion>
-          <List.Accordion title="Desserts" left={props => <List.Icon {...props} icon="cake" />}>
+          <List.Accordion title="Desserts" left={props => <List.Icon {...props} icon="cake" />} theme={{ colors: { primary: colorTheme.midnightGreen } }}>
             {createRestaurantList(savedRestaurants, MealType.DESSERT)}
           </List.Accordion>
-          <List.Accordion title="Drinks" left={props => <List.Icon {...props} icon="glass-cocktail" />}>
+          <List.Accordion title="Drinks" left={props => <List.Icon {...props} icon="glass-cocktail" />} theme={{ colors: { primary: colorTheme.midnightGreen } }}>
             {createRestaurantList(savedRestaurants, MealType.DRINKS)}
           </List.Accordion>
         </List.Section>
         <View style={styles.horizontalButtonContainer}>
           <Button
+            mode='contained'
+            color={colorTheme.midnightGreen}
             onPress={() => {
               setModalVisibility(true)
               setForm(FormTypes.NEW_RESTAURANT)

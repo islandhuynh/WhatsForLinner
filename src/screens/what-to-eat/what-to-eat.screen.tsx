@@ -9,6 +9,7 @@ import { FindMainCourse } from './components/main-course.component';
 import { mealTypeList, MealType } from '../../categories/mealOptions';
 import { AuthContext } from '../../services/authentification/firebase-auth';
 import { RestaurantDetail } from '../../categories/restaurantDetails';
+import { colorTheme } from '../../components/styles/theme';
 
 export const WhatToEat = (): JSX.Element => {
   const { savedRestaurants } = useContext(AuthContext);
@@ -66,7 +67,7 @@ export const WhatToEat = (): JSX.Element => {
           {mealTypeList.map(courseType =>
             <Button
               key={courseType}
-              color={courseSelection === courseType ? 'blue' : 'purple'}
+              color={courseSelection === courseType ? colorTheme.midnightGreen : 'purple'}
               onPress={() => changeCourse(courseType)}
             >
               {courseType}

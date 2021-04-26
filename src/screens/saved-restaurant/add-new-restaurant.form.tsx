@@ -8,6 +8,7 @@ import { styles } from '../../components/styles/stylesheet';
 import { mealTypeList, cuisineTypeList, CuisineType } from '../../categories/mealOptions';
 import { LocationOptions } from '../../categories/locationOptions';
 import { RestaurantDetail } from '../../categories/restaurantDetails';
+import { colorTheme } from '../../components/styles/theme';
 
 import { ErrorTypes } from '../../categories/errors';
 import { AuthContext } from '../../services/authentification/firebase-auth';
@@ -82,18 +83,31 @@ export const AddNewRestaurantForm: React.FC<NewResProps> = ({ setModalVisibility
   const newRestaurantCuisineButton = (cuisine: string): JSX.Element => {
     if (cuisine === CuisineType.NO_PREF) {
       return <Button
+        color={colorTheme.midnightGreen}
         mode={newCuisineTypes.length > 0 ? 'text' : 'contained'}
         onPress={() => setNewCuisineTypes([])}
       >
         Other
-          </Button>
+      </Button>
     } else {
       return (
         <>
           {newCuisineTypes.includes(cuisine) ?
-            <Button mode='contained' onPress={() => setNewCuisineTypes(newCuisineTypes.filter((n) => { return n !== cuisine }))}>{cuisine}</Button>
+            <Button
+              color={colorTheme.midnightGreen}
+              mode='contained'
+              onPress={() => setNewCuisineTypes(newCuisineTypes.filter((n) => { return n !== cuisine }))}
+            >
+              {cuisine}
+            </Button>
             :
-            <Button mode='text' onPress={() => setNewCuisineTypes([...newCuisineTypes, cuisine])}>{cuisine}</Button>
+            <Button
+              color={colorTheme.midnightGreen}
+              mode='text'
+              onPress={() => setNewCuisineTypes([...newCuisineTypes, cuisine])}
+            >
+              {cuisine}
+            </Button>
           }
         </>
       )
@@ -104,9 +118,21 @@ export const AddNewRestaurantForm: React.FC<NewResProps> = ({ setModalVisibility
     return (
       <>
         {newResCourseType.includes(courseType) ?
-          <Button mode='contained' onPress={() => setNewResCourseType(newResCourseType.filter((n) => { return n !== courseType }))}>{courseType}</Button>
+          <Button
+            color={colorTheme.midnightGreen}
+            mode='contained'
+            onPress={() => setNewResCourseType(newResCourseType.filter((n) => { return n !== courseType }))}
+          >
+            {courseType}
+          </Button>
           :
-          <Button mode='text' onPress={() => setNewResCourseType([...newResCourseType, courseType])}>{courseType}</Button>
+          <Button
+            color={colorTheme.midnightGreen}
+            mode='text'
+            onPress={() => setNewResCourseType([...newResCourseType, courseType])}
+          >
+            {courseType}
+          </Button>
         }
       </>
     )
@@ -115,19 +141,20 @@ export const AddNewRestaurantForm: React.FC<NewResProps> = ({ setModalVisibility
   return (
     <>
       <ScrollView style={styles.modalView}>
-        <Text>Test Restaurant</Text>
-        <TextInput mode="outlined" label="Restaurant name" value={newResName} onChangeText={name => setNewResName(name)} />
+        <TextInput theme={{ colors: { primary: colorTheme.midnightGreen } }} mode="outlined" label="Restaurant name" value={newResName} onChangeText={name => setNewResName(name)} />
         {formError === ErrorTypes.EMPTY_TEXT_INPUT ? <Text style={styles.errorText}>Please Enter a restaurant name</Text> : null}
         {formError === ErrorTypes.RESTAURANT_ALREADY_EXIST ? <Text style={styles.errorText}>Restaurant Already Exist</Text> : null}
         <Text>Location</Text>
         <View style={styles.horizontalButtonContainer}>
           <Button
+            color={colorTheme.midnightGreen}
             mode={newResLocation === LocationOptions.PHILADELPHIA ? 'contained' : 'text'}
             onPress={() => setNewResLocation(LocationOptions.PHILADELPHIA)}
           >
             {LocationOptions.PHILADELPHIA}
           </Button>
           <Button
+            color={colorTheme.midnightGreen}
             mode={newResLocation === LocationOptions.NEW_YORK ? 'contained' : 'text'}
             onPress={() => setNewResLocation(LocationOptions.NEW_YORK)}
           >
@@ -136,10 +163,10 @@ export const AddNewRestaurantForm: React.FC<NewResProps> = ({ setModalVisibility
         </View>
         <Text>Price</Text>
         <View style={styles.horizontalButtonContainer}>
-          <Button onPress={() => setNewResPriceTag(1)} color={newResPriceTag === 1 ? 'blue' : 'black'}>$</Button>
-          <Button onPress={() => setNewResPriceTag(2)} color={newResPriceTag === 2 ? 'blue' : 'black'}>$$</Button>
-          <Button onPress={() => setNewResPriceTag(3)} color={newResPriceTag === 3 ? 'blue' : 'black'}>$$$</Button>
-          <Button onPress={() => setNewResPriceTag(4)} color={newResPriceTag === 4 ? 'blue' : 'black'}>$$$$</Button>
+          <Button onPress={() => setNewResPriceTag(1)} color={newResPriceTag === 1 ? colorTheme.midnightGreen : 'black'}>$</Button>
+          <Button onPress={() => setNewResPriceTag(2)} color={newResPriceTag === 2 ? colorTheme.midnightGreen : 'black'}>$$</Button>
+          <Button onPress={() => setNewResPriceTag(3)} color={newResPriceTag === 3 ? colorTheme.midnightGreen : 'black'}>$$$</Button>
+          <Button onPress={() => setNewResPriceTag(4)} color={newResPriceTag === 4 ? colorTheme.midnightGreen : 'black'}>$$$$</Button>
         </View>
         <Text>Course Type</Text>
         <View style={styles.horizontalButtonContainer}>
@@ -150,15 +177,15 @@ export const AddNewRestaurantForm: React.FC<NewResProps> = ({ setModalVisibility
         {populateButtons(cuisineTypeList, newRestaurantCuisineButton)}
         <Text>Has Alcohol?</Text>
         <View style={styles.horizontalButtonContainer}>
-          <Button onPress={() => setNewResHasAlc(true)} mode={newResHasAlc ? 'contained' : 'text'}>Yes</Button>
-          <Button onPress={() => setNewResHasAlc(false)} mode={newResHasAlc ? 'text' : 'contained'}>No</Button>
+          <Button color={colorTheme.midnightGreen} onPress={() => setNewResHasAlc(true)} mode={newResHasAlc ? 'contained' : 'text'}>Yes</Button>
+          <Button color={colorTheme.midnightGreen} onPress={() => setNewResHasAlc(false)} mode={newResHasAlc ? 'text' : 'contained'}>No</Button>
         </View>
-        <TextInput mode="outlined" label="Recommended Dishes #1" value={firstRecommendedDish} onChangeText={v => setFirstRecommendedDish(v)} />
-        <TextInput mode="outlined" label="Recommended Dishes #2" value={secondRecommendedDish} onChangeText={v => setSecondRecommendedDish(v)} />
-        <TextInput mode="outlined" label="Recommended Dishes #3" value={thirdRecommendedDish} onChangeText={v => setThirdRecommendedDish(v)} />
-        <Button onPress={() => setModalVisibility(false)} mode="contained">close</Button>
-        <Button onPress={() => addRestaurant()} mode="contained">add restaurant</Button>
-        <Button onPress={() => clearFields()} mode="contained">reset fields</Button>
+        <TextInput theme={{ colors: { primary: colorTheme.midnightGreen } }} mode="outlined" label="Recommended Dishes #1" value={firstRecommendedDish} onChangeText={v => setFirstRecommendedDish(v)} />
+        <TextInput theme={{ colors: { primary: colorTheme.midnightGreen } }} mode="outlined" label="Recommended Dishes #2" value={secondRecommendedDish} onChangeText={v => setSecondRecommendedDish(v)} />
+        <TextInput theme={{ colors: { primary: colorTheme.midnightGreen } }} mode="outlined" label="Recommended Dishes #3" value={thirdRecommendedDish} onChangeText={v => setThirdRecommendedDish(v)} />
+        <Button color={colorTheme.midnightGreen} onPress={() => setModalVisibility(false)} mode="contained">close</Button>
+        <Button color={colorTheme.midnightGreen} onPress={() => addRestaurant()} mode="contained">add restaurant</Button>
+        <Button color={colorTheme.midnightGreen} onPress={() => clearFields()} mode="contained">reset fields</Button>
       </ScrollView>
     </>
   )

@@ -8,7 +8,6 @@ import { AuthContext } from '../../services/authentification/firebase-auth';
 import { AccScreen, AccScreenProps } from './utilities';
 import { spacer } from '../../components/styles/stylesheet';
 import { colorTheme } from '../../components/styles/theme';
-import { space } from '../../infrastructure/theme/spacing';
 
 export const RegisterScreen: React.FC<AccScreenProps> = ({ setScreen }): JSX.Element => {
   const { error, registerUser, setError } = useContext(AuthContext);
