@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import { Button } from 'react-native-paper';
 
 import { CuisineType, cuisineTypeList } from '../../../categories/mealOptions';
-
 import { populateButtons } from '../../../functions/populateButtons';
+import { spacer, styles } from '../../../components/styles/stylesheet';
 
 interface FilterProps {
   cuisineFilter: string[],
@@ -43,16 +43,8 @@ export const FindMainCourse: React.FC<FilterProps> = ({ cuisineFilter, setCuisin
       </View>
       <Text>Cuisine Type</Text>
       {populateButtons(cuisineTypeList, cuisineTypeButton)}
+      <View style={spacer.small} />
       <Button mode='contained' onPress={() => clearFilters()}>Clear Filters</Button>
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 16
-  },
-  horizontalButtonContainer: {
-    flexDirection: 'row',
-  }
-})

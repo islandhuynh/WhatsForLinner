@@ -85,12 +85,12 @@ export const SavedRestaurants = (): JSX.Element => {
               setForm(FormTypes.NEW_RESTAURANT)
             }}
           >Add new Restaurant</Button>
-          <Button
+          {/* <Button
             onPress={() => {
               setModalVisibility(true)
               setForm(FormTypes.NEW_FOLDER)
             }}
-          >Add new folder</Button>
+          >Add new folder</Button> */}
         </View>
       </ScrollView>
     </SafeArea>
