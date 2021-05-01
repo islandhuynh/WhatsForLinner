@@ -7,21 +7,11 @@ import { SafeArea } from '../../components/utility/safe.area.component';
 import { WhatToEat } from '../../screens/what-to-eat/what-to-eat.screen';
 import { SavedRestaurants } from '../../screens/saved-restaurant/saved-restaurant.screen';
 import { AccountScreen } from '../../screens/authentification/account.screen';
+import { FindRestaurants } from '../../screens/find-restaurant/find-restaurant-screen';
 
 import { AuthContext } from '../../services/authentification/firebase-auth';
 
-
 const Drawer = createDrawerNavigator();
-
-const FindRestaurants = (): JSX.Element => {
-  return (
-    <SafeArea>
-      <View>
-        <Text>Map API</Text>
-      </View>
-    </SafeArea>
-  )
-}
 
 const Settings = (): JSX.Element => {
   const { logout } = useContext(AuthContext);
