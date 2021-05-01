@@ -11,8 +11,9 @@ export const Search = (): JSX.Element => {
   return (
     <View>
       <Searchbar
+        style={searchBarStyles.Bar}
         placeholder="Enter a location"
-        icon="map"
+        icon="food"
         value={searchKeyword}
         onSubmitEditing={() => onSearch(searchKeyword)}
         onChangeText={(text) => setSearchKeyword(text)}
@@ -20,3 +21,9 @@ export const Search = (): JSX.Element => {
     </View>
   )
 }
+
+const searchBarStyles = StyleSheet.create({
+  Bar: {
+    margin: 20,
+  }
+})

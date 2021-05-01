@@ -36,7 +36,8 @@ export const FindRestaurants = (): JSX.Element => {
 
 const mapStyles = StyleSheet.create({
   map: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height
+    alignSelf: 'center',
+    width: Dimensions.get('window').width - 40,
+    height: Dimensions.get('window').height - 110,
   }
 })
