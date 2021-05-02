@@ -1,13 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
-import MapView from 'react-native-maps';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import MapView, { Marker, Callout } from 'react-native-maps';
+import { StyleSheet, Dimensions, Text } from 'react-native';
 import { SafeArea } from '../../components/utility/safe.area.component';
 import { Search } from './search-component';
 import { LocationContext } from '../../services/location/location-context';
+import { RestaurantsContext } from '../../services/restaurant/restaurant-context';
+import { CompactRestaurantInfo } from './compact-restaurant-info';
+import { RestaurantInfo } from '../../categories/restaurantDetails';
 
 export const FindRestaurants = (): JSX.Element => {
   const { location } = useContext(LocationContext);
+  const { restaurants } = useContext(RestaurantsContext);
+
   const [latDelta, setLatDelta] = useState(0);
+  const [restaurantInfoVisibility, setRestaurantInfoVisibility] = useState(false);
+
   const { lat, lng, viewport } = location;
 
   useEffect(() => {
@@ -20,6 +27,7 @@ export const FindRestaurants = (): JSX.Element => {
   return (
     <SafeArea>
       <Search />
+      <Text>{restaurants.length}</Text>
       <MapView
         region={{
           latitude: lat,
@@ -29,6 +37,22 @@ export const FindRestaurants = (): JSX.Element => {
         }}
         style={mapStyles.map}
       >
+        {restaurants.map((restaurant: RestaurantInfo) => {
+          return (
+            <Marker
+              key={restaurant.name}
+              title={restaurant.name}
+              coordinate={{
+                latitude: restaurant.geometry.location.lat,
+                longitude: restaurant.geometry.location.lng
+              }}
+            >
+              {/* <Callout onPress={() => setRestaurantInfoVisibility(true)}>
+                <CompactRestaurantInfo restaurant={restaurant} />
+              </Callout> */}
+            </Marker>
+          )
+        })}
       </MapView>
     </SafeArea>
   )
