@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Linking } from 'react-native';
 import { Button, IconButton } from 'react-native-paper';
 
 import { RestaurantDetail } from '../../categories/restaurantDetails';
+import { colorTheme } from '../../components/styles/theme';
 
 interface InfoProps {
   selectedRestaurant: RestaurantDetail,
@@ -11,6 +12,21 @@ interface InfoProps {
 }
 
 export const InfoCard: React.FC<InfoProps> = ({ selectedRestaurant, setInfoCardVisibility, setEditMode }): JSX.Element => {
+  const createRecommendedList = (recommendedDishesArray: string[]) => {
+    let recommendedList = [];
+    for (let i = 0; i < recommendedDishesArray.length; i++) recommendedList.push(<Text>{i + 1}. {recommendedDishesArray[i]}</Text>);
+    return recommendedList;
+  }
+
+  const createCategoryList = (categories: string[]) => {
+    if (categories.length === 1) return <Text>{categories[0]}</Text>
+    let listString = '';
+    for (let i = 0; i < categories.length - 1; i++) {
+      listString += categories[i] + ', ';
+    }
+    return <Text>{listString += categories[categories.length - 1]}</Text>
+  }
+
   return (
     <View style={styles.modalView}>
       <View style={cardStyles.iconButtonContainer}>
@@ -18,16 +34,22 @@ export const InfoCard: React.FC<InfoProps> = ({ selectedRestaurant, setInfoCardV
         <IconButton icon="file-document-edit" onPress={() => setEditMode(true)} style={cardStyles.editButton} />
       </View>
       <Text style={cardStyles.title}>{selectedRestaurant.name}</Text>
-      <Text>Course Type</Text>
-      <Text>{selectedRestaurant.courseType}</Text>
-      <Text>{'$'.repeat(selectedRestaurant.dollarSigns)}</Text>
-      <Text>{selectedRestaurant.category}</Text>
-      <Text>{selectedRestaurant.dishes}</Text>
+      <View style={styles.spacer} />
+      <Text>Course Type: {createCategoryList(selectedRestaurant.courseType)}</Text>
+      <Text>Price: {'$'.repeat(selectedRestaurant.dollarSigns)}</Text>
+      <Text>Cuisine Type: {createCategoryList(selectedRestaurant.category)}</Text>
       <Text>Recommended Dishes</Text>
-      <Text>{selectedRestaurant.recommendedDishes}</Text>
-      <Text>{selectedRestaurant.hasAlcohol ? 'Has Alcohol' : 'Does not have alcohol'}</Text>
+      {selectedRestaurant.recommendedDishes ? createRecommendedList(selectedRestaurant.recommendedDishes) : null}
+      <Text>Has Alcohol: {selectedRestaurant.hasAlcohol ? 'Yes' : 'No'}</Text>
       <Text>Location: {selectedRestaurant.location}</Text>
-      <Button mode="contained" onPress={() => Linking.openURL(`https://www.google.com/search?q=${selectedRestaurant.name}`)}>search</Button>
+      <View style={styles.spacer} />
+      <Button
+        color={colorTheme.midnightGreen}
+        mode="contained"
+        onPress={() => Linking.openURL(`https://www.google.com/search?q=${selectedRestaurant.name}`)}
+      >
+        search
+      </Button>
     </View>
   )
 }
@@ -58,6 +80,9 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red'
+  },
+  spacer: {
+    padding: 5
   }
 })
 
@@ -73,7 +98,7 @@ const cardStyles = StyleSheet.create({
   },
   editButton: {
     marginTop: 10,
-    marginLeft: 280,
+    marginLeft: 245,
     position: 'absolute'
   },
   closeButton: {

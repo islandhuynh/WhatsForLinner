@@ -1,14 +1,14 @@
 import React, { useState, useContext } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 
 import { styles } from '../../components/styles/stylesheet';
-import { ErrorTypes } from '../../categories/errors';
 import { RestaurantDetail, emptyRestaurant } from '../../categories/restaurantDetails';
 import { LocationOptions } from '../../categories/locationOptions';
 import { populateButtons } from '../../functions/populateButtons';
 import { mealTypeList, cuisineTypeList, CuisineType } from '../../categories/mealOptions';
 import { AuthContext } from '../../services/authentification/firebase-auth';
+import { colorTheme } from '../../components/styles/theme';
 
 interface EditProps {
   selectedRestaurant: RestaurantDetail,
@@ -39,6 +39,7 @@ export const EditRestaurant: React.FC<EditProps> = ({
   const newRestaurantCuisineButton = (cuisine: string): JSX.Element => {
     if (cuisine === CuisineType.NO_PREF) {
       return <Button
+        color={colorTheme.midnightGreen}
         mode={newCategories.length > 0 ? 'text' : 'contained'}
         onPress={() => setNewCategories([])}
       >
@@ -48,9 +49,9 @@ export const EditRestaurant: React.FC<EditProps> = ({
       return (
         <>
           {newCategories.includes(cuisine) ?
-            <Button mode='contained' onPress={() => setNewCategories(newCategories.filter((n) => { return n !== cuisine }))}>{cuisine}</Button>
+            <Button color={colorTheme.midnightGreen} mode='contained' onPress={() => setNewCategories(newCategories.filter((n) => { return n !== cuisine }))}>{cuisine}</Button>
             :
-            <Button mode='text' onPress={() => setNewCategories([...newCategories, cuisine])}>{cuisine}</Button>
+            <Button color={colorTheme.midnightGreen} mode='text' onPress={() => setNewCategories([...newCategories, cuisine])}>{cuisine}</Button>
           }
         </>
       )
@@ -61,9 +62,15 @@ export const EditRestaurant: React.FC<EditProps> = ({
     return (
       <>
         {newCourseTypes.includes(courseType) ?
-          <Button mode='contained' onPress={() => setNewCourseTypes(newCourseTypes.filter((n) => { return n !== courseType }))}>{courseType}</Button>
+          <Button
+            color={colorTheme.midnightGreen}
+            mode='contained'
+            onPress={() => setNewCourseTypes(newCourseTypes.filter((n) => { return n !== courseType }))}
+          >
+            {courseType}
+          </Button>
           :
-          <Button mode='text' onPress={() => setNewCourseTypes([...newCourseTypes, courseType])}>{courseType}</Button>
+          <Button color={colorTheme.midnightGreen} mode='text' onPress={() => setNewCourseTypes([...newCourseTypes, courseType])}>{courseType}</Button>
         }
       </>
     )
@@ -96,18 +103,35 @@ export const EditRestaurant: React.FC<EditProps> = ({
 
   return (
     <View style={styles.modalView}>
-      <Text>Edit Restaurant Info</Text>
-      <Text>{selectedRestaurantIndex}</Text>
+      <View style={editRestaurantStyles.topButtonContainer}>
+        <View style={editRestaurantStyles.buttonFlex}>
+          <Button color={colorTheme.midnightGreen} onPress={() => setEditMode(false)}>return</Button>
+        </View>
+        <View style={editRestaurantStyles.spacer}></View>
+        <View style={editRestaurantStyles.buttonFlex}>
+          <Button
+            color={colorTheme.midnightGreen}
+            onPress={() => {
+              setInfoCardVisibility(false)
+              setEditMode(false)
+            }}
+          >
+            close
+          </Button>
+        </View>
+      </View>
       <TextInput mode="outlined" label="Restaurant name" value={newName} onChangeText={name => setNewName(name)} />
       <Text>Location</Text>
       <View style={styles.horizontalButtonContainer}>
         <Button
+          color={colorTheme.midnightGreen}
           mode={newLocation === LocationOptions.PHILADELPHIA ? 'contained' : 'text'}
           onPress={() => setNewLocation(LocationOptions.PHILADELPHIA)}
         >
           {LocationOptions.PHILADELPHIA}
         </Button>
         <Button
+          color={colorTheme.midnightGreen}
           mode={newLocation === LocationOptions.NEW_YORK ? 'contained' : 'text'}
           onPress={() => setNewLocation(LocationOptions.NEW_YORK)}
         >
@@ -116,36 +140,37 @@ export const EditRestaurant: React.FC<EditProps> = ({
       </View>
       <Text>Price</Text>
       <View style={styles.horizontalButtonContainer}>
-        <Button onPress={() => setNewDollarSigns(1)} color={newDollarSigns === 1 ? 'blue' : 'black'}>$</Button>
-        <Button onPress={() => setNewDollarSigns(2)} color={newDollarSigns === 2 ? 'blue' : 'black'}>$$</Button>
-        <Button onPress={() => setNewDollarSigns(3)} color={newDollarSigns === 3 ? 'blue' : 'black'}>$$$</Button>
-        <Button onPress={() => setNewDollarSigns(4)} color={newDollarSigns === 4 ? 'blue' : 'black'}>$$$$</Button>
+        <Button onPress={() => setNewDollarSigns(1)} color={newDollarSigns === 1 ? colorTheme.midnightGreen : 'black'}>$</Button>
+        <Button onPress={() => setNewDollarSigns(2)} color={newDollarSigns === 2 ? colorTheme.midnightGreen : 'black'}>$$</Button>
+        <Button onPress={() => setNewDollarSigns(3)} color={newDollarSigns === 3 ? colorTheme.midnightGreen : 'black'}>$$$</Button>
+        <Button onPress={() => setNewDollarSigns(4)} color={newDollarSigns === 4 ? colorTheme.midnightGreen : 'black'}>$$$$</Button>
       </View>
-      <View style={styles.horizontalButtonContainer}>
-        {populateButtons(mealTypeList, selectCourseTypeButton)}
-      </View>
+      <Text>Course Type</Text>
+      {populateButtons(mealTypeList, selectCourseTypeButton)}
       <Text>Cusine Type</Text>
       {populateButtons(cuisineTypeList, newRestaurantCuisineButton)}
       <Text>Has Alcohol?</Text>
       <View style={styles.horizontalButtonContainer}>
-        <Button onPress={() => setChangeHasAlc(true)} mode={changeHasAlc ? 'contained' : 'text'}>Yes</Button>
-        <Button onPress={() => setChangeHasAlc(false)} mode={changeHasAlc ? 'text' : 'contained'}>No</Button>
+        <Button color={colorTheme.midnightGreen} onPress={() => setChangeHasAlc(true)} mode={changeHasAlc ? 'contained' : 'text'}>Yes</Button>
+        <Button color={colorTheme.midnightGreen} onPress={() => setChangeHasAlc(false)} mode={changeHasAlc ? 'text' : 'contained'}>No</Button>
       </View>
       <TextInput mode="outlined" label="Recommended Dishes #1" value={firstRecommendedDish} onChangeText={v => setFirstRecommendedDish(v)} />
       <TextInput mode="outlined" label="Recommended Dishes #2" value={secondRecommendedDish} onChangeText={v => setSecondRecommendedDish(v)} />
       <TextInput mode="outlined" label="Recommended Dishes #3" value={thirdRecommendedDish} onChangeText={v => setThirdRecommendedDish(v)} />
-      <Button onPress={() => submitChanges()}>Submit Changes</Button>
-      <Button onPress={() => setEditMode(false)}>return</Button>
-      <Button
-        onPress={() => {
-          setInfoCardVisibility(false)
-          setEditMode(false)
-        }}
-      >
-        close
-      </Button>
+      <View style={{ padding: 5 }}></View>
+      <Button color={colorTheme.midnightGreen} mode="contained" onPress={() => submitChanges()}>Submit Changes</Button>
     </View>
   )
 }
 
-
+const editRestaurantStyles = StyleSheet.create({
+  topButtonContainer: {
+    flexDirection: 'row',
+  },
+  buttonFlex: {
+    flex: 1
+  },
+  spacer: {
+    flex: 1.5
+  }
+})

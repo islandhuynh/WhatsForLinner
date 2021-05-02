@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { ScrollView, View, Text } from 'react-native';
+import { ScrollView, View, Text, StyleSheet } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 
 import { populateButtons } from '../../functions/populateButtons';
@@ -141,6 +141,15 @@ export const AddNewRestaurantForm: React.FC<NewResProps> = ({ setModalVisibility
   return (
     <>
       <ScrollView style={styles.modalView}>
+        <View style={addRestaurantStyles.topButtonContainer}>
+          <View style={addRestaurantStyles.resetButton}>
+            <Button color={colorTheme.midnightGreen} onPress={() => clearFields()}>reset fields</Button>
+          </View>
+          <View style={addRestaurantStyles.spacer}></View>
+          <View style={addRestaurantStyles.buttonFlex}>
+            <Button color={colorTheme.midnightGreen} onPress={() => setModalVisibility(false)}>close</Button>
+          </View>
+        </View>
         <TextInput theme={{ colors: { primary: colorTheme.midnightGreen } }} mode="outlined" label="Restaurant name" value={newResName} onChangeText={name => setNewResName(name)} />
         {formError === ErrorTypes.EMPTY_TEXT_INPUT ? <Text style={styles.errorText}>Please Enter a restaurant name</Text> : null}
         {formError === ErrorTypes.RESTAURANT_ALREADY_EXIST ? <Text style={styles.errorText}>Restaurant Already Exist</Text> : null}
@@ -169,9 +178,7 @@ export const AddNewRestaurantForm: React.FC<NewResProps> = ({ setModalVisibility
           <Button onPress={() => setNewResPriceTag(4)} color={newResPriceTag === 4 ? colorTheme.midnightGreen : 'black'}>$$$$</Button>
         </View>
         <Text>Course Type</Text>
-        <View style={styles.horizontalButtonContainer}>
-          {populateButtons(mealTypeList, selectCourseTypeButton)}
-        </View>
+        {populateButtons(mealTypeList, selectCourseTypeButton)}
         {formError === ErrorTypes.NO_COURSE_SELECTION ? <Text style={styles.errorText}>Please select at least one course type</Text> : null}
         <Text>Cusine Type</Text>
         {populateButtons(cuisineTypeList, newRestaurantCuisineButton)}
@@ -183,10 +190,24 @@ export const AddNewRestaurantForm: React.FC<NewResProps> = ({ setModalVisibility
         <TextInput theme={{ colors: { primary: colorTheme.midnightGreen } }} mode="outlined" label="Recommended Dishes #1" value={firstRecommendedDish} onChangeText={v => setFirstRecommendedDish(v)} />
         <TextInput theme={{ colors: { primary: colorTheme.midnightGreen } }} mode="outlined" label="Recommended Dishes #2" value={secondRecommendedDish} onChangeText={v => setSecondRecommendedDish(v)} />
         <TextInput theme={{ colors: { primary: colorTheme.midnightGreen } }} mode="outlined" label="Recommended Dishes #3" value={thirdRecommendedDish} onChangeText={v => setThirdRecommendedDish(v)} />
-        <Button color={colorTheme.midnightGreen} onPress={() => setModalVisibility(false)} mode="contained">close</Button>
+        <View style={{ padding: 5 }}></View>
         <Button color={colorTheme.midnightGreen} onPress={() => addRestaurant()} mode="contained">add restaurant</Button>
-        <Button color={colorTheme.midnightGreen} onPress={() => clearFields()} mode="contained">reset fields</Button>
       </ScrollView>
     </>
   )
 }
+
+const addRestaurantStyles = StyleSheet.create({
+  topButtonContainer: {
+    flexDirection: 'row',
+  },
+  buttonFlex: {
+    flex: 1
+  },
+  spacer: {
+    flex: 1
+  },
+  resetButton: {
+    flex: 1.5
+  }
+})
