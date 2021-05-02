@@ -8,11 +8,11 @@ export const CompactRestaurantInfo = ({ restaurant }: any): JSX.Element => {
   return (
     <View style={styles.imageContainer}>
       {isAndroid ?
-        <Webview style={styles.imageView} />
+        <Webview style={styles.imageView} source={{ uri: restaurant.photos[0] }} />
         :
         <Image source={{ uri: restaurant.photos[0] }} style={styles.imageView} />
       }
-      <Text>{restaurant.name}</Text>
+      <Text style={styles.restaurantText}>{restaurant.name}</Text>
     </View>
   )
 }
@@ -20,12 +20,18 @@ export const CompactRestaurantInfo = ({ restaurant }: any): JSX.Element => {
 const styles = StyleSheet.create({
   imageContainer: {
     maxWidth: 120,
-    paddingBottom: 10,
-    alignItems: 'center'
+    padding: 10,
+    alignItems: 'center',
+    borderRadius: 30,
+
   },
   imageView: {
     borderRadius: 10,
     width: 120,
-    height: 100,
+    height: 80,
   },
+  restaurantText: {
+    textAlign: 'center',
+    fontSize: 12,
+  }
 })

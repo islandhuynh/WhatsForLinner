@@ -45,7 +45,6 @@ export const RestaurantsContextProvider = ({ children }: any) => {
   };
 
   const restaurantsTransform = (results: RestaurantInfo[]) => {
-    console.log(results.length);
     const mappedResults = results.map(restaurant => {
       return {
         ...restaurant,

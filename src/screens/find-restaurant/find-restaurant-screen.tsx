@@ -27,7 +27,6 @@ export const FindRestaurants = (): JSX.Element => {
   return (
     <SafeArea>
       <Search />
-      <Text>{restaurants.length}</Text>
       <MapView
         region={{
           latitude: lat,
@@ -37,19 +36,19 @@ export const FindRestaurants = (): JSX.Element => {
         }}
         style={mapStyles.map}
       >
-        {restaurants.map((restaurant: RestaurantInfo) => {
+        {restaurants.map((restaurant: RestaurantInfo, index: number) => {
           return (
             <Marker
-              key={restaurant.name}
+              key={restaurant.name + index}
               title={restaurant.name}
               coordinate={{
                 latitude: restaurant.geometry.location.lat,
                 longitude: restaurant.geometry.location.lng
               }}
             >
-              {/* <Callout onPress={() => setRestaurantInfoVisibility(true)}>
+              <Callout onPress={() => setRestaurantInfoVisibility(true)}>
                 <CompactRestaurantInfo restaurant={restaurant} />
-              </Callout> */}
+              </Callout>
             </Marker>
           )
         })}
