@@ -6,10 +6,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   modalView: {
-    margin: 20,
     backgroundColor: "white",
     borderRadius: 5,
-    padding: 35,
+    padding: 15,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

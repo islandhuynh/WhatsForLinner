@@ -67,7 +67,7 @@ export const WhatToEat = (): JSX.Element => {
           {mealTypeList.map(courseType =>
             <Button
               key={courseType}
-              color={courseSelection === courseType ? colorTheme.midnightGreen : 'purple'}
+              color={courseSelection === courseType ? colorTheme.midnightGreen : 'orange'}
               onPress={() => changeCourse(courseType)}
             >
               {courseType}
@@ -89,7 +89,7 @@ export const WhatToEat = (): JSX.Element => {
                 :
                 null
               }
-              <Button onPress={() => Linking.openURL(`https://www.google.com/search?q=${selectedRestaurant.name}`)}>Find Location</Button>
+              <Button color={colorTheme.midnightGreen} onPress={() => Linking.openURL(`https://www.google.com/search?q=${selectedRestaurant.name}`)}>Find Location</Button>
             </Card.Content>
           </Card>
           :
@@ -110,19 +110,37 @@ export const WhatToEat = (): JSX.Element => {
           />
         }
         <View style={spacer.xs} />
-        <Button mode='contained' onPress={() => chooseRestaurant()}>{selectedRestaurant ? 'Try again' : courseSelection === 'Drinks' ? 'What to drink' : 'What to eat'}</Button>
+        <Button color={colorTheme.midnightGreen} mode='contained' onPress={() => chooseRestaurant()}>{selectedRestaurant ? 'Try again' : courseSelection === 'Drinks' ? 'What to drink' : 'What to eat'}</Button>
         <View style={spacer.xs} />
         <Text>Location</Text>
         <View style={spacer.xs} />
         <View style={styles.horizontalButtonContainer}>
-          <Button onPress={() => changeLocation('Philadelphia')} mode={selectedLocation === 'Philadelphia' ? 'contained' : 'text'}>Philadelphia</Button>
-          <Button onPress={() => changeLocation('New York')} mode={selectedLocation === 'New York' ? 'contained' : 'text'}>New York</Button>
+          <View style={{ flex: 1 }}>
+            <Button
+              color={colorTheme.midnightGreen}
+              onPress={() => changeLocation('Philadelphia')} mode={selectedLocation === 'Philadelphia' ? 'contained' : 'text'}
+            >
+              Philadelphia
+            </Button>
+          </View>
+          <View style={{ flex: 1 }}>
+            <Button
+              color={colorTheme.midnightGreen}
+              onPress={() => changeLocation('New York')} mode={selectedLocation === 'New York' ? 'contained' : 'text'}
+            >
+              New York
+            </Button>
+          </View>
         </View>
         <View style={spacer.xs} />
         {courseSelection === 'Drinks' ?
           <View style={styles.horizontalButtonContainer}>
-            <Button onPress={() => setHasAlcohol(true)} mode={hasAlcohol ? 'contained' : 'text'}>Alcoholic</Button>
-            <Button onPress={() => setHasAlcohol(false)} mode={hasAlcohol ? 'text' : 'contained'}>Non-Alcoholic</Button>
+            <View style={{ flex: 1 }}>
+              <Button color={colorTheme.midnightGreen} onPress={() => setHasAlcohol(true)} mode={hasAlcohol ? 'contained' : 'text'}>Alcoholic</Button>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Button color={colorTheme.midnightGreen} onPress={() => setHasAlcohol(false)} mode={hasAlcohol ? 'text' : 'contained'}>Non-Alcoholic</Button>
+            </View>
           </View>
           :
           null

@@ -8,9 +8,15 @@ export const populateButtons = (typeList: string[], buttonFunction: (item: strin
   for (let index = 0; index < typeList.length; index += 3) {
     buttonViewElements.push(
       <View style={styles.horizontalButtonContainer} key={index}>
-        {buttonFunction(typeList[index])}
-        {buttonFunction(typeList[index + 1])}
-        {buttonFunction(typeList[index + 2])}
+        <View style={{ flex: 1 }}>
+          {buttonFunction(typeList[index])}
+        </View>
+        <View style={{ flex: 1 }}>
+          {buttonFunction(typeList[index + 1])}
+        </View>
+        <View style={{ flex: 1 }}>
+          {buttonFunction(typeList[index + 2])}
+        </View>
       </View>
     )
   }

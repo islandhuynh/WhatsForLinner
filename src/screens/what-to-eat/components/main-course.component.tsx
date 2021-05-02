@@ -5,6 +5,7 @@ import { Button } from 'react-native-paper';
 import { CuisineType, cuisineTypeList } from '../../../categories/mealOptions';
 import { populateButtons } from '../../../functions/populateButtons';
 import { spacer, styles } from '../../../components/styles/stylesheet';
+import { colorTheme } from '../../../components/styles/theme';
 
 interface FilterProps {
   cuisineFilter: string[],
@@ -18,14 +19,14 @@ export const FindMainCourse: React.FC<FilterProps> = ({ cuisineFilter, setCuisin
 
   const cuisineTypeButton = (cuisine: string): JSX.Element => {
     if (cuisine === CuisineType.NO_PREF) {
-      return <Button onPress={() => setCuisineFilters([])} mode={cuisineFilter.length > 0 ? 'text' : 'contained'}>No Pref</Button>
+      return <Button color={colorTheme.midnightGreen} onPress={() => setCuisineFilters([])} mode={cuisineFilter.length > 0 ? 'text' : 'contained'}>No Pref</Button>
     } else {
       return (
         <>
           {cuisineFilter.includes(cuisine) ?
-            <Button mode='contained' onPress={() => setCuisineFilters(cuisineFilter.filter((n) => { return n !== cuisine }))}>{cuisine}</Button>
+            <Button color={colorTheme.midnightGreen} mode='contained' onPress={() => setCuisineFilters(cuisineFilter.filter((n) => { return n !== cuisine }))}>{cuisine}</Button>
             :
-            <Button mode='text' onPress={() => setCuisineFilters([...cuisineFilter, cuisine])}>{cuisine}</Button>
+            <Button color={colorTheme.midnightGreen} mode='text' onPress={() => setCuisineFilters([...cuisineFilter, cuisine])}>{cuisine}</Button>
           }
         </>
       )
@@ -44,7 +45,7 @@ export const FindMainCourse: React.FC<FilterProps> = ({ cuisineFilter, setCuisin
       <Text>Cuisine Type</Text>
       {populateButtons(cuisineTypeList, cuisineTypeButton)}
       <View style={spacer.small} />
-      <Button mode='contained' onPress={() => clearFilters()}>Clear Filters</Button>
+      <Button color={colorTheme.midnightGreen} mode='contained' onPress={() => clearFilters()}>Clear Filters</Button>
     </>
   )
 }

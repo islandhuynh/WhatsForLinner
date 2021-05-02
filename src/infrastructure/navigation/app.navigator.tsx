@@ -1,30 +1,16 @@
-import React, { useContext, useEffect } from 'react';
-import { View, Text, Button } from 'react-native';
+import React, { useContext } from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 
-import { SafeArea } from '../../components/utility/safe.area.component';
 import { WhatToEat } from '../../screens/what-to-eat/what-to-eat.screen';
 import { SavedRestaurants } from '../../screens/saved-restaurant/saved-restaurant.screen';
 import { AccountScreen } from '../../screens/authentification/account.screen';
 import { FindRestaurants } from '../../screens/find-restaurant/find-restaurant-screen';
+import { Settings } from '../../screens/settings/settings-screen';
 
 import { AuthContext } from '../../services/authentification/firebase-auth';
 
 const Drawer = createDrawerNavigator();
-
-const Settings = (): JSX.Element => {
-  const { logout } = useContext(AuthContext);
-
-  return (
-    <SafeArea>
-      <View>
-        <Text>Settings</Text>
-        <Button title="logout" onPress={() => logout()} />
-      </View>
-    </SafeArea>
-  )
-}
 
 export const AppNavigator = (): JSX.Element => {
   const { user } = useContext(AuthContext);
