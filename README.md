@@ -2,7 +2,7 @@
 
 ![Project Image](https://user-images.githubusercontent.com/74833309/119281140-8313c700-bc02-11eb-9208-0b5cdfe097a8.png)
 
-> This is a ReadMe template to help save you time and effort.
+> Not sure what to eat? Let me help you with that!
 
 ---
 
