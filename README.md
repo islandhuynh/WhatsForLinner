@@ -38,7 +38,17 @@ A mobile application to help users decide their next meal. By entering an addres
 
 This application is available on Expo. You can access it by either cloning this repository and running it on your local machine or scanning the QR code provided in this link [link](https://expo.io/@islandhuynh/projects/WhatsForLinner).
 
-To launch this application on your local machine, you will need to install the Expo cli using npm install -g expo-cli.
+To launch this application on your local machine, you will first need to install the Expo cli using the following command: 
+```html
+    npm install -g expo-cli
+```
+
+Afterwards, go to project directory and starthe app using 
+```
+  expo start
+```
+
+From here, you may either use a phone emulator or scan the QR code displayed on your phone to use the app.
 
 
 [Back To The Top](#read-me-template)
