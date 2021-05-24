@@ -43,7 +43,7 @@ To launch this application on your local machine, you will first need to install
     npm install -g expo-cli
 ```
 
-Afterwards, go to project directory and starthe app using 
+Afterwards, go to project directory and start the app using 
 ```
   expo start
 ```
